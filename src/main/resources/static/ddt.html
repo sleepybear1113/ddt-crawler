@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+    <meta charset="UTF-8">
+    <title>ddt</title>
+</head>
+<style>
+    td, th {
+        text-align: center;
+        border: 1px solid;
+    }
+
+    .table-item-name {
+        width: 200px;
+    }
+
+    .table-seller {
+        width: 200px;
+    }
+
+    .table-time {
+        width: 200px;
+    }
+
+    .bid-unit-black {
+        color: black;
+    }
+
+    .mouth-unit-black {
+        color: black;
+    }
+
+    .bid-unit-red {
+        color: red;
+    }
+
+    .mouth-unit-red {
+        color: red;
+    }
+
+    .has-buyer {
+        color: cadetblue;
+    }
+
+    .expected-price {
+        color: darkgray;
+    }
+
+    .has-border {
+        border: darkgray solid 1px;
+        display: inline-block;
+    }
+</style>
+<body>
+
+<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="js.js"></script>
+
+<div style="border: black 1px solid; padding: 3px">
+    <div>
+        <label for="key">key </label><input id="key">
+    </div>
+    <div>
+        <button id="save" onclick="saveUser()">保存</button>
+    </div>
+</div>
+<div class="block-layout">
+
+
+    <div class="has-border">
+        <div>
+            <label for="selfId">selfId </label><input id="selfId" value="">
+        </div>
+        <div>
+            <label for="userId">userId </label><input id="userId" value="">
+        </div>
+        <div>
+            <label for="itemName">物品名称 </label><input id="itemName">
+        </div>
+        <div>
+            <a>排序根据：</a>
+            <label for="orderTime">时间</label><input id="orderTime" type="radio" name="type" checked>
+            <label for="orderName">　名称</label><input id="orderName" type="radio" name="type">
+            <label for="orderPrice">　价格</label><input id="orderPrice" type="radio" name="type">
+            <label for="orderSeller">　卖家</label><input id="orderSeller" type="radio" name="type">
+        </div>
+
+        <div>
+            <a>排序方式：</a>
+            <label for="asc">升序</label><input id="asc" type="radio" name="sort" checked>
+            <label for="desc">　降序</label><input id="desc" type="radio" name="sort">
+        </div>
+
+        <div>
+            <label for="page">页码:</label><input id="page" type="number" min="1" value="1" maxlength="3" max="9999">
+            <button onclick="resetPage()">重置</button>
+        </div>
+        <div>
+            <button id="frontPage" onclick="frontPage()">上一页</button>
+            <button id="getAuctionItems" onclick="getAuctionItems()">发起请求</button>
+            <button id="nextPage" onclick="nextPage()">下一页</button>
+        </div>
+    </div>
+
+    <div class="has-border">
+        <div>
+            <label for="itemName-price">物品名称 </label><input id="itemName-price">
+        </div>
+        <div>
+            <label>一口价</label>
+            <button id="getAuctionPriceOder1-1" onclick="getAuctionPriceOder(true, false)">低价优先</button>
+            <button id="getAuctionPriceOder1-2" onclick="getAuctionPriceOder(true, true)">高价优先</button>
+        </div>
+        <div>
+            <label>竞拍价</label>
+            <button id="getAuctionPriceOder2-1" onclick="getAuctionPriceOder(false, false)">低价优先</button>
+            <button id="getAuctionPriceOder2-2" onclick="getAuctionPriceOder(false, true)">高价优先</button>
+        </div>
+    </div>
+</div>
+<br/>
+<div>
+    <label for="total-count">总共条数：</label><input id="total-count" readonly disabled maxlength="5">
+    <label for="total-page">总共条数：</label><input id="total-page" readonly disabled maxlength="4">
+</div>
+<div>
+    <label for="template-id">templateId：</label><input id="template-id">
+    <label for="template-name">templateName：</label><input id="template-name">
+    <button onclick="saveTemplate()">更新 template</button>
+</div>
+<table style="border: 1px solid">
+    <caption>结果</caption>
+    <tr>
+        <th>序号</th>
+        <th class="table-item-name has-not-buyer">物品名称</th>
+        <th>数量</th>
+        <th>竞拍价</th>
+        <th>一口价</th>
+        <th class="bid-unit-black">竞拍价单价</th>
+        <th class="mouth-unit-black">一口价单价</th>
+        <th>期望价格</th>
+        <th class="table-seller">出售者</th>
+        <th class="table-time">时间</th>
+        <th>有效期</th>
+        <th>templateId</th>
+        <th>pic</th>
+        <th>竞拍</th>
+    </tr>
+    <tbody id="result-body">
+    </tbody>
+</table>
+</body>
+</html>

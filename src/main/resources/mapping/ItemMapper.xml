@@ -1,0 +1,440 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjx.ddtcrawler.mapper.ItemMapper">
+    <resultMap id="BaseResultMap" type="com.xjx.ddtcrawler.domain.Item">
+        <id column="id" jdbcType="BIGINT" property="id"/>
+        <result column="auction_id" jdbcType="BIGINT" property="auctionId"/>
+        <result column="template_id" jdbcType="BIGINT" property="templateId"/>
+        <result column="price" jdbcType="BIGINT" property="price"/>
+        <result column="mouthful" jdbcType="BIGINT" property="mouthful"/>
+        <result column="unit_price" jdbcType="DECIMAL" property="unitPrice"/>
+        <result column="unit_mouthful_price" jdbcType="DECIMAL" property="unitMouthfulPrice"/>
+        <result column="count" jdbcType="BIGINT" property="count"/>
+        <result column="begin_time" jdbcType="BIGINT" property="beginTime"/>
+        <result column="begin_date" jdbcType="TIMESTAMP" property="beginDate"/>
+        <result column="auctioneer_id" jdbcType="BIGINT" property="auctioneerId"/>
+        <result column="auctioneer_name" jdbcType="VARCHAR" property="auctioneerName"/>
+        <result column="buyer_id" jdbcType="BIGINT" property="buyerId"/>
+        <result column="buyer_name" jdbcType="VARCHAR" property="buyerName"/>
+        <result column="rise" jdbcType="BIGINT" property="rise"/>
+        <result column="pic" jdbcType="VARCHAR" property="pic"/>
+        <result column="item_id" jdbcType="BIGINT" property="itemId"/>
+        <result column="auction_date" jdbcType="INTEGER" property="auctionDate"/>
+        <result column="item_date" jdbcType="INTEGER" property="itemDate"/>
+        <result column="agility_compose" jdbcType="BIGINT" property="agilityCompose"/>
+        <result column="user_id" jdbcType="BIGINT" property="userId"/>
+        <result column="attack_compose" jdbcType="BIGINT" property="attackCompose"/>
+        <result column="defend_compose" jdbcType="BIGINT" property="defendCompose"/>
+        <result column="luck_compose" jdbcType="BIGINT" property="luckCompose"/>
+        <result column="place" jdbcType="BIGINT" property="place"/>
+        <result column="strengthen_level" jdbcType="BIGINT" property="strengthenLevel"/>
+        <result column="color" jdbcType="VARCHAR" property="color"/>
+        <result column="skin" jdbcType="VARCHAR" property="skin"/>
+        <result column="is_binds" jdbcType="TINYINT" property="isBinds"/>
+        <result column="is_used" jdbcType="TINYINT" property="isUsed"/>
+        <result column="is_judge" jdbcType="TINYINT" property="isJudge"/>
+    </resultMap>
+
+    <sql id="Base_Column_List">
+        id, auction_id, template_id, price, mouthful, unit_price, unit_mouthful_price, `count`,
+    begin_time, begin_date, auctioneer_id, auctioneer_name, buyer_id, buyer_name, rise, pic,
+    item_id, auction_date, item_date, agility_compose, user_id, attack_compose, defend_compose, 
+    luck_compose, place, strengthen_level, color, skin, is_binds, is_used, is_judge
+    </sql>
+    <select id="getById" parameterType="java.lang.Long" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from ddt.item
+        where id = #{id,jdbcType=BIGINT}
+    </select>
+    <select id="getMaxAuctionId" resultType="java.lang.Long">
+        select MAX(auction_id)
+        from ddt.item
+    </select>
+    <delete id="deleteById" parameterType="java.lang.Long">
+        delete
+        from ddt.item
+        where id = #{id,jdbcType=BIGINT}
+    </delete>
+    <insert id="insert" keyColumn="id" keyProperty="id" parameterType="com.xjx.ddtcrawler.domain.Item"
+            useGeneratedKeys="true">
+        insert into ddt.item (auction_id, template_id, price,
+                              mouthful, unit_price, unit_mouthful_price,
+                              `count`, begin_time, begin_date,
+                              auctioneer_id, auctioneer_name, buyer_id,
+                              buyer_name, rise, pic, item_id,
+                              auction_date, item_date, agility_compose,
+                              user_id, attack_compose, defend_compose,
+                              luck_compose, place, strengthen_level,
+                              color, skin, is_binds,
+                              is_used, is_judge)
+        values (#{auctionId,jdbcType=BIGINT}, #{templateId,jdbcType=BIGINT}, #{price,jdbcType=BIGINT},
+                #{mouthful,jdbcType=BIGINT}, #{unitPrice,jdbcType=DECIMAL}, #{unitMouthfulPrice,jdbcType=DECIMAL},
+                #{count,jdbcType=BIGINT}, #{beginTime,jdbcType=BIGINT}, #{beginDate,jdbcType=TIMESTAMP},
+                #{auctioneerId,jdbcType=BIGINT}, #{auctioneerName,jdbcType=VARCHAR}, #{buyerId,jdbcType=BIGINT},
+                #{buyerName,jdbcType=VARCHAR}, #{rise,jdbcType=BIGINT}, #{pic,jdbcType=VARCHAR},
+                #{itemId,jdbcType=BIGINT},
+                #{auctionDate,jdbcType=INTEGER}, #{itemDate,jdbcType=INTEGER}, #{agilityCompose,jdbcType=BIGINT},
+                #{userId,jdbcType=BIGINT}, #{attackCompose,jdbcType=BIGINT}, #{defendCompose,jdbcType=BIGINT},
+                #{luckCompose,jdbcType=BIGINT}, #{place,jdbcType=BIGINT}, #{strengthenLevel,jdbcType=BIGINT},
+                #{color,jdbcType=VARCHAR}, #{skin,jdbcType=VARCHAR}, #{isBinds,jdbcType=TINYINT},
+                #{isUsed,jdbcType=TINYINT}, #{isJudge,jdbcType=TINYINT})
+    </insert>
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.xjx.ddtcrawler.domain.Item"
+            useGeneratedKeys="true">
+        insert into ddt.item
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="auctionId != null">
+                auction_id,
+            </if>
+            <if test="templateId != null">
+                template_id,
+            </if>
+            <if test="price != null">
+                price,
+            </if>
+            <if test="mouthful != null">
+                mouthful,
+            </if>
+            <if test="unitPrice != null">
+                unit_price,
+            </if>
+            <if test="unitMouthfulPrice != null">
+                unit_mouthful_price,
+            </if>
+            <if test="count != null">
+                `count`,
+            </if>
+            <if test="beginTime != null">
+                begin_time,
+            </if>
+            <if test="beginDate != null">
+                begin_date,
+            </if>
+            <if test="auctioneerId != null">
+                auctioneer_id,
+            </if>
+            <if test="auctioneerName != null">
+                auctioneer_name,
+            </if>
+            <if test="buyerId != null">
+                buyer_id,
+            </if>
+            <if test="buyerName != null">
+                buyer_name,
+            </if>
+            <if test="rise != null">
+                rise,
+            </if>
+            <if test="pic != null">
+                pic,
+            </if>
+            <if test="itemId != null">
+                item_id,
+            </if>
+            <if test="auctionDate != null">
+                auction_date,
+            </if>
+            <if test="itemDate != null">
+                item_date,
+            </if>
+            <if test="agilityCompose != null">
+                agility_compose,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="attackCompose != null">
+                attack_compose,
+            </if>
+            <if test="defendCompose != null">
+                defend_compose,
+            </if>
+            <if test="luckCompose != null">
+                luck_compose,
+            </if>
+            <if test="place != null">
+                place,
+            </if>
+            <if test="strengthenLevel != null">
+                strengthen_level,
+            </if>
+            <if test="color != null">
+                color,
+            </if>
+            <if test="skin != null">
+                skin,
+            </if>
+            <if test="isBinds != null">
+                is_binds,
+            </if>
+            <if test="isUsed != null">
+                is_used,
+            </if>
+            <if test="isJudge != null">
+                is_judge,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="auctionId != null">
+                #{auctionId,jdbcType=BIGINT},
+            </if>
+            <if test="templateId != null">
+                #{templateId,jdbcType=BIGINT},
+            </if>
+            <if test="price != null">
+                #{price,jdbcType=BIGINT},
+            </if>
+            <if test="mouthful != null">
+                #{mouthful,jdbcType=BIGINT},
+            </if>
+            <if test="unitPrice != null">
+                #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="unitMouthfulPrice != null">
+                #{unitMouthfulPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="count != null">
+                #{count,jdbcType=BIGINT},
+            </if>
+            <if test="beginTime != null">
+                #{beginTime,jdbcType=BIGINT},
+            </if>
+            <if test="beginDate != null">
+                #{beginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctioneerId != null">
+                #{auctioneerId,jdbcType=BIGINT},
+            </if>
+            <if test="auctioneerName != null">
+                #{auctioneerName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerId != null">
+                #{buyerId,jdbcType=BIGINT},
+            </if>
+            <if test="buyerName != null">
+                #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="rise != null">
+                #{rise,jdbcType=BIGINT},
+            </if>
+            <if test="pic != null">
+                #{pic,jdbcType=VARCHAR},
+            </if>
+            <if test="itemId != null">
+                #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="auctionDate != null">
+                #{auctionDate,jdbcType=INTEGER},
+            </if>
+            <if test="itemDate != null">
+                #{itemDate,jdbcType=INTEGER},
+            </if>
+            <if test="agilityCompose != null">
+                #{agilityCompose,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="attackCompose != null">
+                #{attackCompose,jdbcType=BIGINT},
+            </if>
+            <if test="defendCompose != null">
+                #{defendCompose,jdbcType=BIGINT},
+            </if>
+            <if test="luckCompose != null">
+                #{luckCompose,jdbcType=BIGINT},
+            </if>
+            <if test="place != null">
+                #{place,jdbcType=BIGINT},
+            </if>
+            <if test="strengthenLevel != null">
+                #{strengthenLevel,jdbcType=BIGINT},
+            </if>
+            <if test="color != null">
+                #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="skin != null">
+                #{skin,jdbcType=VARCHAR},
+            </if>
+            <if test="isBinds != null">
+                #{isBinds,jdbcType=TINYINT},
+            </if>
+            <if test="isUsed != null">
+                #{isUsed,jdbcType=TINYINT},
+            </if>
+            <if test="isJudge != null">
+                #{isJudge,jdbcType=TINYINT},
+            </if>
+        </trim>
+    </insert>
+    <insert id="insertBatch" parameterType="com.xjx.ddtcrawler.domain.Item">
+        insert into ddt.item(auction_id, template_id, price, mouthful, unit_price, unit_mouthful_price, count,
+        begin_time, begin_date, auctioneer_id, auctioneer_name, buyer_id, buyer_name, rise, pic, item_id, auction_date,
+        item_date, agility_compose, user_id, attack_compose, defend_compose, luck_compose, place, strengthen_level,
+        color, skin, is_binds, is_used, is_judge)
+        VALUES
+        <foreach collection="records" item="record" index="index" separator=",">
+            (#{record.auctionId,jdbcType=BIGINT},
+            #{record.templateId,jdbcType=BIGINT},
+            #{record.price,jdbcType=BIGINT},
+            #{record.mouthful,jdbcType=BIGINT},
+            #{record.unitPrice,jdbcType=DECIMAL},
+            #{record.unitMouthfulPrice,jdbcType=DECIMAL},
+            #{record.count,jdbcType=BIGINT},
+            #{record.beginTime,jdbcType=BIGINT},
+            #{record.beginDate,jdbcType=TIMESTAMP},
+            #{record.auctioneerId,jdbcType=BIGINT},
+            #{record.auctioneerName,jdbcType=VARCHAR},
+            #{record.buyerId,jdbcType=BIGINT},
+            #{record.buyerName,jdbcType=VARCHAR},
+            #{record.rise,jdbcType=BIGINT},
+            #{record.pic,jdbcType=VARCHAR},
+            #{record.itemId,jdbcType=BIGINT},
+            #{record.auctionDate,jdbcType=INTEGER},
+            #{record.itemDate,jdbcType=INTEGER},
+            #{record.agilityCompose,jdbcType=BIGINT},
+            #{record.userId,jdbcType=BIGINT},
+            #{record.attackCompose,jdbcType=BIGINT},
+            #{record.defendCompose,jdbcType=BIGINT},
+            #{record.luckCompose,jdbcType=BIGINT},
+            #{record.place,jdbcType=BIGINT},
+            #{record.strengthenLevel,jdbcType=BIGINT},
+            #{record.color,jdbcType=VARCHAR},
+            #{record.skin,jdbcType=VARCHAR},
+            #{record.isBinds,jdbcType=TINYINT},
+            #{record.isUsed,jdbcType=TINYINT},
+            #{record.isJudge,jdbcType=TINYINT})
+        </foreach>
+    </insert>
+    <update id="updateByIdSelective" parameterType="com.xjx.ddtcrawler.domain.Item">
+        update ddt.item
+        <set>
+            <if test="auctionId != null">
+                auction_id = #{auctionId,jdbcType=BIGINT},
+            </if>
+            <if test="templateId != null">
+                template_id = #{templateId,jdbcType=BIGINT},
+            </if>
+            <if test="price != null">
+                price = #{price,jdbcType=BIGINT},
+            </if>
+            <if test="mouthful != null">
+                mouthful = #{mouthful,jdbcType=BIGINT},
+            </if>
+            <if test="unitPrice != null">
+                unit_price = #{unitPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="unitMouthfulPrice != null">
+                unit_mouthful_price = #{unitMouthfulPrice,jdbcType=DECIMAL},
+            </if>
+            <if test="count != null">
+                `count` = #{count,jdbcType=BIGINT},
+            </if>
+            <if test="beginTime != null">
+                begin_time = #{beginTime,jdbcType=BIGINT},
+            </if>
+            <if test="beginDate != null">
+                begin_date = #{beginDate,jdbcType=TIMESTAMP},
+            </if>
+            <if test="auctioneerId != null">
+                auctioneer_id = #{auctioneerId,jdbcType=BIGINT},
+            </if>
+            <if test="auctioneerName != null">
+                auctioneer_name = #{auctioneerName,jdbcType=VARCHAR},
+            </if>
+            <if test="buyerId != null">
+                buyer_id = #{buyerId,jdbcType=BIGINT},
+            </if>
+            <if test="buyerName != null">
+                buyer_name = #{buyerName,jdbcType=VARCHAR},
+            </if>
+            <if test="rise != null">
+                rise = #{rise,jdbcType=BIGINT},
+            </if>
+            <if test="pic != null">
+                pic = #{pic,jdbcType=VARCHAR},
+            </if>
+            <if test="itemId != null">
+                item_id = #{itemId,jdbcType=BIGINT},
+            </if>
+            <if test="auctionDate != null">
+                auction_date = #{auctionDate,jdbcType=INTEGER},
+            </if>
+            <if test="itemDate != null">
+                item_date = #{itemDate,jdbcType=INTEGER},
+            </if>
+            <if test="agilityCompose != null">
+                agility_compose = #{agilityCompose,jdbcType=BIGINT},
+            </if>
+            <if test="userId != null">
+                user_id = #{userId,jdbcType=BIGINT},
+            </if>
+            <if test="attackCompose != null">
+                attack_compose = #{attackCompose,jdbcType=BIGINT},
+            </if>
+            <if test="defendCompose != null">
+                defend_compose = #{defendCompose,jdbcType=BIGINT},
+            </if>
+            <if test="luckCompose != null">
+                luck_compose = #{luckCompose,jdbcType=BIGINT},
+            </if>
+            <if test="place != null">
+                place = #{place,jdbcType=BIGINT},
+            </if>
+            <if test="strengthenLevel != null">
+                strengthen_level = #{strengthenLevel,jdbcType=BIGINT},
+            </if>
+            <if test="color != null">
+                color = #{color,jdbcType=VARCHAR},
+            </if>
+            <if test="skin != null">
+                skin = #{skin,jdbcType=VARCHAR},
+            </if>
+            <if test="isBinds != null">
+                is_binds = #{isBinds,jdbcType=TINYINT},
+            </if>
+            <if test="isUsed != null">
+                is_used = #{isUsed,jdbcType=TINYINT},
+            </if>
+            <if test="isJudge != null">
+                is_judge = #{isJudge,jdbcType=TINYINT},
+            </if>
+        </set>
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateById" parameterType="com.xjx.ddtcrawler.domain.Item">
+        update ddt.item
+        set auction_id          = #{auctionId,jdbcType=BIGINT},
+            template_id         = #{templateId,jdbcType=BIGINT},
+            price               = #{price,jdbcType=BIGINT},
+            mouthful            = #{mouthful,jdbcType=BIGINT},
+            unit_price          = #{unitPrice,jdbcType=DECIMAL},
+            unit_mouthful_price = #{unitMouthfulPrice,jdbcType=DECIMAL},
+            `count`             = #{count,jdbcType=BIGINT},
+            begin_time          = #{beginTime,jdbcType=BIGINT},
+            begin_date          = #{beginDate,jdbcType=TIMESTAMP},
+            auctioneer_id       = #{auctioneerId,jdbcType=BIGINT},
+            auctioneer_name     = #{auctioneerName,jdbcType=VARCHAR},
+            buyer_id            = #{buyerId,jdbcType=BIGINT},
+            buyer_name          = #{buyerName,jdbcType=VARCHAR},
+            rise                = #{rise,jdbcType=BIGINT},
+            pic                 = #{pic,jdbcType=VARCHAR},
+            item_id             = #{itemId,jdbcType=BIGINT},
+            auction_date        = #{auctionDate,jdbcType=INTEGER},
+            item_date           = #{itemDate,jdbcType=INTEGER},
+            agility_compose     = #{agilityCompose,jdbcType=BIGINT},
+            user_id             = #{userId,jdbcType=BIGINT},
+            attack_compose      = #{attackCompose,jdbcType=BIGINT},
+            defend_compose      = #{defendCompose,jdbcType=BIGINT},
+            luck_compose        = #{luckCompose,jdbcType=BIGINT},
+            place               = #{place,jdbcType=BIGINT},
+            strengthen_level    = #{strengthenLevel,jdbcType=BIGINT},
+            color               = #{color,jdbcType=VARCHAR},
+            skin                = #{skin,jdbcType=VARCHAR},
+            is_binds            = #{isBinds,jdbcType=TINYINT},
+            is_used             = #{isUsed,jdbcType=TINYINT},
+            is_judge            = #{isJudge,jdbcType=TINYINT}
+        where id = #{id,jdbcType=BIGINT}
+    </update>
+</mapper>

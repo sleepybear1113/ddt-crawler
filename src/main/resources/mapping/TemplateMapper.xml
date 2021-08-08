@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.xjx.ddtcrawler.mapper.TemplateMapper">
+
+    <resultMap id="BaseResultMap" type="com.xjx.ddtcrawler.domain.Template">
+        <result column="id" jdbcType="BIGINT" property="id"/>
+        <result column="name" jdbcType="VARCHAR" property="name"/>
+        <result column="price" jdbcType="DECIMAL" property="price"/>
+        <result column="modify_time" jdbcType="BIGINT" property="modifyTime"/>
+    </resultMap>
+    <insert id="add" parameterType="com.xjx.ddtcrawler.domain.Template">
+        insert into ddt.template(id, name, price, modify_time)
+        VALUES (#{id}, #{name}, #{price}, #{modifyTime})
+    </insert>
+    <update id="update" parameterType="com.xjx.ddtcrawler.domain.Template">
+        update ddt.template
+        <set>
+            <if test="name != null">
+                name =#{name},
+            </if>
+            <if test="price != null">
+                price =#{price},
+            </if>
+            <if test="modifyTime != null">
+                modify_time =#{modifyTime},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <select id="get" resultType="com.xjx.ddtcrawler.domain.Template">
+        select *
+        from ddt.template
+        where id = #{id}
+    </select>
+
+    <select id="getByIds" resultType="com.xjx.ddtcrawler.domain.Template">
+        select *
+        from ddt.template
+        where id in
+        <foreach collection="ids" item="id" index="index" open="(" close=")" separator=",">
+            #{id}
+        </foreach>
+    </select>
+</mapper>
