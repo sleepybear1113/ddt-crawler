@@ -16,7 +16,12 @@ public class TimeUtil {
     private static final TimeZone TZ = TimeZone.getTimeZone("Asia/Shanghai");
     private static final SimpleDateFormat SDF = new SimpleDateFormat(SDF_PATTEN);
 
-
+    /**
+     * 字符串转 {@link Date}
+     *
+     * @param s 字符串
+     * @return {@link Date}
+     */
     public static Date convertStringDate(String s) {
         SDF.setTimeZone(TZ);
         if (StringUtils.isBlank(s)) {
@@ -30,6 +35,12 @@ public class TimeUtil {
         }
     }
 
+    /**
+     * 字符串转 13 位时间戳
+     *
+     * @param s 字符串
+     * @return 时间戳
+     */
     public static long convertStringTimestamp(String s) {
         Date date = convertStringDate(s);
         if (date == null) {

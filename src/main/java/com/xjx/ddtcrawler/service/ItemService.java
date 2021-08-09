@@ -31,7 +31,7 @@ public class ItemService {
             return 0;
         }
 
-        List<Item> items = result.getItem();
+        List<Item> items = result.getItems();
         if (CollectionUtils.isEmpty(items)) {
             return 0;
         }

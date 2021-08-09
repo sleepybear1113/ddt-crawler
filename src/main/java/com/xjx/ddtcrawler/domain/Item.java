@@ -6,7 +6,9 @@ import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.xjx.ddtcrawler.utils.TimeUtil;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Date;
+import java.util.Objects;
 
 /**
  * @author XieJiaxing
@@ -14,7 +16,7 @@ import java.util.Date;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Item {
+public class Item implements Serializable {
     private Long id;
     @XStreamAlias("AuctionID")
     @XStreamAsAttribute
@@ -226,5 +228,22 @@ public class Item {
         if (beginDate != null) {
             this.beginTime = beginDate.getTime();
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) {
+            return true;
+        }
+        if (o == null || getClass() != o.getClass()) {
+            return false;
+        }
+        Item item = (Item) o;
+        return Objects.equals(auctionId, item.auctionId);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(auctionId);
     }
 }

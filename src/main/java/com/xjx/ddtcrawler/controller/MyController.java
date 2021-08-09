@@ -50,7 +50,7 @@ public class MyController {
                            @RequestParam(required = false, defaultValue = "-1") Long userId,
                            @RequestParam(required = false, defaultValue = "") String itemName,
                            @RequestParam(required = false, defaultValue = "2") Integer order,
-                           @RequestParam(required = false, defaultValue = "true") Boolean sort) throws MyException {
+                           @RequestParam(required = false, defaultValue = "true") Boolean sort) throws MyException, InterruptedException {
         boolean inRange = AuctionConstant.OrderEnum.isInRange(order);
         if (!inRange) {
             throw new MyException("入参有误：type = " + order);
@@ -64,21 +64,16 @@ public class MyController {
         if (userInfo == null) {
             throw new MyException("用户信息未保存");
         }
-        String key = userInfo.getKey();
-        if (StringUtils.isBlank(key)) {
-            throw new MyException("用户的 key 不存在");
-        }
 
         QueryUrl queryUrl = new QueryUrl();
-        queryUrl.setKey(key);
-        queryUrl.setSelfId(selfId);
+        queryUrl.setUserInfo(userInfo);
         queryUrl.setOrder(order);
         queryUrl.setUserId(userId);
         queryUrl.setSort(sort);
         queryUrl.setPage(page);
         queryUrl.setName(itemName.trim());
 
-        return myLogic.getItemsWithFillItemInfo(queryUrl, false);
+        return myLogic.getResultsByBatchPages(queryUrl);
     }
 
     @RequestMapping("/getAuctionPriceOder")
@@ -107,7 +102,7 @@ public class MyController {
 
         Result r = new Result();
         List<Item> items = new ArrayList<>();
-        r.setItem(items);
+        r.setItems(items);
         int maxPage = 10;
         for (int i = 1; i <= maxPage; i++) {
             queryUrl.setPage(i);
@@ -126,7 +121,7 @@ public class MyController {
                 break;
             }
 
-            items.addAll(result.getItem());
+            items.addAll(result.getItems());
 
             try {
                 Thread.sleep(333);

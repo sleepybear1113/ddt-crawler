@@ -2,11 +2,14 @@ package com.xjx.ddtcrawler.domain;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.thoughtworks.xstream.XStream;
+import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
 import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import lombok.Data;
+import org.apache.commons.collections4.CollectionUtils;
 
+import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -16,7 +19,7 @@ import java.util.stream.Collectors;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
-public class Result {
+public class Result implements Serializable {
 
     @XStreamAsAttribute
     private Long total;
@@ -26,7 +29,8 @@ public class Result {
     private String message;
     @XStreamImplicit
     @XStreamAsAttribute
-    private List<Item> Item;
+    @XStreamAlias("Item")
+    private List<Item> items;
 
     private static XStream xStream;
 
@@ -36,13 +40,19 @@ public class Result {
         xStream.allowTypes(new Class[]{Result.class, Item.class});
         xStream.processAnnotations(Result.class);
         xStream.alias("Result", Result.class);
-        xStream.alias("Item", Item.class);
+        xStream.alias("items", Item.class);
     }
 
     public boolean isSuccess() {
         return Boolean.TRUE.equals(value);
     }
 
+    /**
+     * 将读取到的字符串转对象
+     *
+     * @param s response
+     * @return Result
+     */
     public static Result parseResult(String s) {
         Result result;
         try {
@@ -54,10 +64,27 @@ public class Result {
         }
     }
 
+    /**
+     * 对下属的 items 进行内部的往外提取
+     */
+    public void parseItems() {
+        if (!isSuccess()) {
+            return;
+        }
+
+        if (CollectionUtils.isEmpty(this.items)) {
+            return;
+        }
+
+        for (Item item : this.items) {
+            item.buildSelf();
+        }
+    }
+
     @Override
     public String toString() {
         return "Result{" + "total=" + total + ", value=" + value + ", message='" + message + "'\n" +
-                Item.stream().map(String::valueOf).collect(Collectors.joining("\n")) + "\n" +
+                items.stream().map(String::valueOf).collect(Collectors.joining("\n")) + "\n" +
                 '}';
     }
 }

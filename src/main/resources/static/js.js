@@ -9,7 +9,27 @@ function saveUser() {
     }).then(res => {
         // 接口数据
         console.log(res.data)
-    })
+    });
+}
+
+function processErrorResult(result) {
+    if (result == null) {
+        alert("返回值为空");
+        return false;
+    }
+
+    let code = result.code;
+    let message = result.message;
+    if (code === 0) {
+        return true;
+    }
+
+    if (code === -1) {
+        alert(message);
+    } else {
+        alert("系统错误！\n" + message);
+    }
+    return false;
 }
 
 function resetPage() {
@@ -106,12 +126,18 @@ function getAuctionItems() {
     }).then(res => {
         // 接口数据
         let data = res.data;
+        let success = processErrorResult(data);
+        if (!success) {
+            return;
+        }
+
         console.log(data);
+        data = data.result;
         if (data == null) {
             return;
         }
 
-        let result = new Result(data.total, data.value, data.message, data.item);
+        let result = new Result(data.total, data.value, data.message, data.items);
         console.log(result);
         if (result == null) {
             return;
@@ -147,12 +173,18 @@ function getAuctionPriceOder(priceType, sort) {
     }).then(res => {
         // 接口数据
         let data = res.data;
+        let success = processErrorResult(data);
+        if (!success) {
+            return;
+        }
+
+        data = data.result;
         console.log(data);
         if (data == null) {
             return;
         }
 
-        let result = new Result(data.total, data.value, data.message, data.item);
+        let result = new Result(data.total, data.value, data.message, data.items);
         console.log(result);
         if (result == null) {
             return;

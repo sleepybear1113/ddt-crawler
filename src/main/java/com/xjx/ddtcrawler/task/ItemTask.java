@@ -7,6 +7,7 @@ import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
 import com.xjx.ddtcrawler.domain.UserInfo;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
+import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.logic.MyLogic;
 import com.xjx.ddtcrawler.service.ItemService;
 import com.xjx.ddtcrawler.utils.ThreadPoolUtil;
@@ -46,7 +47,7 @@ public class ItemTask {
         log.info("当前数据库最大的 auctionId = " + maxAuctionId);
     }
 
-    public Long getLatestAuctionId(String key, Long selfId) {
+    public Long getLatestAuctionId(String key, Long selfId) throws MyException {
         QueryUrl queryUrl = new QueryUrl();
         queryUrl.setOrder(AuctionConstant.OrderEnum.TIME.getValue());
         queryUrl.setSort(true);
@@ -63,7 +64,7 @@ public class ItemTask {
             return null;
         }
 
-        List<Item> items = result.getItem();
+        List<Item> items = result.getItems();
         if (CollectionUtils.isEmpty(items)) {
             return null;
         }
