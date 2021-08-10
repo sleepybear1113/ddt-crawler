@@ -47,12 +47,11 @@ public class ItemTask {
         log.info("当前数据库最大的 auctionId = " + maxAuctionId);
     }
 
-    public Long getLatestAuctionId(String key, Long selfId) throws MyException {
+    public Long getLatestAuctionId(UserInfo userInfo) throws MyException {
         QueryUrl queryUrl = new QueryUrl();
         queryUrl.setOrder(AuctionConstant.OrderEnum.TIME.getValue());
         queryUrl.setSort(true);
-        queryUrl.setKey(key);
-        queryUrl.setSelfId(selfId);
+        queryUrl.setUserInfo(userInfo);
 
         Result result = myLogic.getItemsWithFillItemInfo(queryUrl, false);
         if (result == null) {
@@ -116,7 +115,7 @@ public class ItemTask {
                 // 15 分钟锁
                 commonCache.setCache(ITEM_TASK_KEY, 1, 1000 * 60 * 15L);
                 log.info("获取次数：" + count++);
-                delay = singleTask(key, selfId);
+                delay = singleTask(userInfo);
                 sleep(delay);
             } while (delay > 0);
             commonCache.delCache(ITEM_TASK_KEY);
@@ -127,7 +126,7 @@ public class ItemTask {
         return "start";
     }
 
-    public long singleTask(String key, Long selfId) {
+    public long singleTask(UserInfo userInfo) {
         long nextDelayTime;
         int maxRetryTimes = 3;
         Long auctionId = null;
@@ -141,7 +140,7 @@ public class ItemTask {
 
             // 获取拍卖场并且写入数据库，返回最大的 id
             try {
-                auctionId = getLatestAuctionId(key, selfId);
+                auctionId = getLatestAuctionId(userInfo);
             } catch (Exception e) {
                 log.error("获取拍卖场数据失败", e);
             }

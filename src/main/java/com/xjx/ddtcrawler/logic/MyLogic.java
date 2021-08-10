@@ -71,10 +71,10 @@ public class MyLogic {
      * @throws MyException          Exception
      * @throws InterruptedException Exception
      */
-    public Result getResultsByBatchPages(QueryUrl queryUrl) throws MyException, InterruptedException {
+    public Result getSingleResult(QueryUrl queryUrl) throws MyException, InterruptedException {
         List<Integer> pages = new ArrayList<>();
         pages.add(queryUrl.getPage());
-        return getResultsByBatchPages(queryUrl, pages, true, 1000L);
+        return getResultsByBatchPages(queryUrl, pages, true, 250L);
     }
 
     /**
@@ -112,11 +112,21 @@ public class MyLogic {
             queryUrl.setPage(page);
 
             Result result = getRawResponseBody(queryUrl);
-            if (result.isSuccess()) {
-                // 每次成功后 total 累加，items 累加
-                totalResult.getItems().addAll(result.getItems());
-                totalResult.setValue(true);
+            if (!result.isSuccess()) {
+                continue;
             }
+
+            Long total = result.getTotal();
+            int ceil = (int) Math.ceil(total * 1.0 / 20) + 1;
+            // 判断是否获取的页数超过了最大页数
+            if (i > ceil) {
+                // 这里设置为 pages.size() 则保证下一步跳出循环，并且能走到别的逻辑
+                i = pages.size();
+            }
+
+            // 每次成功后 total 累加，items 累加
+            totalResult.getItems().addAll(result.getItems());
+            totalResult.setValue(true);
 
             if (i + 1 < pages.size()) {
                 // 每次请求之后的时延，防止高并发

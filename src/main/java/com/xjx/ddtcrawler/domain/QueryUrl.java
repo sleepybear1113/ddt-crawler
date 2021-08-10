@@ -8,6 +8,8 @@ import org.apache.commons.lang3.StringUtils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Random;
 
 /**
@@ -19,6 +21,16 @@ import java.util.Random;
 public class QueryUrl {
     public static final String URL = "https://s57_app1105673153_qqgame_com.7road.net/request/auctionpagelist.ashx";
     public static final Random RANDOM = new Random();
+    public static final List<Integer> DEFAULT_PAGES = new ArrayList<>();
+    static {
+        DEFAULT_PAGES.add(1);
+        DEFAULT_PAGES.add(2);
+        DEFAULT_PAGES.add(3);
+        DEFAULT_PAGES.add(4);
+        DEFAULT_PAGES.add(5);
+        DEFAULT_PAGES.add(6);
+        DEFAULT_PAGES.add(7);
+    }
 
     /**
      * 页码

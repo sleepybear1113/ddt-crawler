@@ -73,13 +73,13 @@ public class MyController {
         queryUrl.setPage(page);
         queryUrl.setName(itemName.trim());
 
-        return myLogic.getResultsByBatchPages(queryUrl);
+        return myLogic.getSingleResult(queryUrl);
     }
 
     @RequestMapping("/getAuctionPriceOder")
     public Result getAuctionPriceOder(Long selfId, String itemName,
                                       @RequestParam(required = false, defaultValue = "false") Boolean sort,
-                                      @RequestParam(required = false, defaultValue = "true") Boolean priceType) throws MyException {
+                                      @RequestParam(required = false, defaultValue = "true") Boolean priceType) throws MyException, InterruptedException {
         if (selfId == null || StringUtils.isBlank(itemName)) {
             throw new MyException("入参为空");
         }
@@ -87,48 +87,16 @@ public class MyController {
         if (userInfo == null) {
             throw new MyException("用户信息未保存");
         }
-        String key = userInfo.getKey();
-        if (StringUtils.isBlank(key)) {
-            throw new MyException("用户的 key 不存在");
-        }
 
         QueryUrl queryUrl = new QueryUrl();
-        queryUrl.setKey(key);
-        queryUrl.setSelfId(selfId);
+        queryUrl.setUserInfo(userInfo);
         queryUrl.setOrder(AuctionConstant.OrderEnum.PRICE.getValue());
         queryUrl.setUserId(-1L);
         queryUrl.setSort(sort);
         queryUrl.setName(itemName.trim());
 
-        Result r = new Result();
-        List<Item> items = new ArrayList<>();
-        r.setItems(items);
-        int maxPage = 10;
-        for (int i = 1; i <= maxPage; i++) {
-            queryUrl.setPage(i);
-            Result result = myLogic.getItemsWithFillItemInfo(queryUrl, false);
-            if (!result.isSuccess()) {
-                break;
-            }
-            Long total = result.getTotal();
-            if (total == null) {
-                break;
-            }
-            r.setTotal(total);
-            r.setMessage(result.getMessage());
-            int ceil = (int) Math.ceil(total * 1.0 / 20) + 1;
-            if (i > ceil) {
-                break;
-            }
-
-            items.addAll(result.getItems());
-
-            try {
-                Thread.sleep(333);
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-        }
+        Result result = myLogic.getResultsByBatchPages(queryUrl, QueryUrl.DEFAULT_PAGES, true, 250L);
+        List<Item> items = result.getItems();
 
         if (priceType) {
             items.sort(Comparator.comparing(Item::getUnitMouthfulPrice));
@@ -139,7 +107,7 @@ public class MyController {
             Collections.reverse(items);
         }
 
-        return r;
+        return result;
     }
 
     @RequestMapping("/startAuction")
@@ -154,6 +122,4 @@ public class MyController {
         template.setId(templateId);
         return templateService.save(template);
     }
-
-
 }
