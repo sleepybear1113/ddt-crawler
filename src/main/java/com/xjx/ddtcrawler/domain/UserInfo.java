@@ -2,6 +2,7 @@ package com.xjx.ddtcrawler.domain;
 
 import lombok.Data;
 
+import java.io.Serializable;
 import java.util.Objects;
 
 /**
@@ -9,7 +10,9 @@ import java.util.Objects;
  * @date 2021/8/1 22:56
  */
 @Data
-public class UserInfo {
+public class UserInfo implements Serializable {
+    private static final long serialVersionUID = -9012607971616653420L;
+
     private Long id;
     private String key;
 

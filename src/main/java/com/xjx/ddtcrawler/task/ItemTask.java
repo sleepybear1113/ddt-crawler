@@ -99,7 +99,6 @@ public class ItemTask {
         if (userInfo == null) {
             return "user key 不存在";
         }
-        String key = userInfo.getKey();
 
         Object cache = commonCache.getCache(ITEM_TASK_KEY);
         if (cache != null) {

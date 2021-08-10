@@ -17,6 +17,8 @@ import java.util.Objects;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Item implements Serializable {
+    private static final long serialVersionUID = 5112946113341660069L;
+
     private Long id;
     @XStreamAlias("AuctionID")
     @XStreamAsAttribute

@@ -20,6 +20,7 @@ import java.util.stream.Collectors;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Result implements Serializable {
+    private static final long serialVersionUID = 2207327607885009086L;
 
     @XStreamAsAttribute
     private Long total;
