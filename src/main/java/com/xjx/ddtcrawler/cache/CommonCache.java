@@ -30,7 +30,8 @@ public class CommonCache {
         CACHE_MAP.remove(key);
     }
 
-    public Object getCache(String key) {
+    @SuppressWarnings({"unchecked"})
+    public <T> T getCache(String key) {
         CacheDomain cacheDomain = CACHE_MAP.get(key);
         if (cacheDomain == null) {
             return null;
@@ -41,6 +42,11 @@ public class CommonCache {
             CACHE_MAP.remove(key);
             return null;
         }
-        return cacheDomain.getObject();
+        Object cache = cacheDomain.getObject();
+        try {
+            return (T) cache;
+        } catch (Exception e) {
+            return null;
+        }
     }
 }

@@ -53,24 +53,33 @@
 </style>
 <body>
 
-<script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+<script src="axios.min.js"></script>
 <script src="js.js"></script>
 
 <div style="border: black 1px solid; padding: 3px">
     <div>
+        <label for="selfId">selfId </label><input id="selfId" value="">
+    </div>
+    <div>
         <label for="key">key </label><input id="key">
+    </div>
+    <div>
+        <label for="temporary-license">临时 license </label><input id="temporary-license">
     </div>
     <div>
         <button id="save" onclick="saveUser()">保存</button>
     </div>
+    <div>
+        <label for="temporary-license-expire">过期时间(秒) </label><input id="temporary-license-expire" type="number" min="0" value="3600">
+        <label for="concurrent-time">并发时间(毫秒) </label><input id="concurrent-time" type="number" min="0" value="5000">
+        <div>
+            <button id="create-temporary-license" onclick="createTemporaryLicense()">生成临时License</button>
+            <button id="delete-temporary-license" onclick="deleteTemporaryLicense()">删除临时License</button>
+        </div>
+    </div>
 </div>
 <div class="block-layout">
-
-
     <div class="has-border">
-        <div>
-            <label for="selfId">selfId </label><input id="selfId" value="">
-        </div>
         <div>
             <label for="userId">userId </label><input id="userId" value="">
         </div>
@@ -108,13 +117,13 @@
         </div>
         <div>
             <label>一口价</label>
-            <button id="getAuctionPriceOder1-1" onclick="getAuctionPriceOder(true, false)">低价优先</button>
-            <button id="getAuctionPriceOder1-2" onclick="getAuctionPriceOder(true, true)">高价优先</button>
+            <button id="getAuctionPriceOder1-1" onclick="getAuctionPriceOder(2, false)">低价优先</button>
+            <button id="getAuctionPriceOder1-2" onclick="getAuctionPriceOder(2, true)">高价优先</button>
         </div>
         <div>
             <label>竞拍价</label>
-            <button id="getAuctionPriceOder2-1" onclick="getAuctionPriceOder(false, false)">低价优先</button>
-            <button id="getAuctionPriceOder2-2" onclick="getAuctionPriceOder(false, true)">高价优先</button>
+            <button id="getAuctionPriceOder2-1" onclick="getAuctionPriceOder(1, false)">低价优先</button>
+            <button id="getAuctionPriceOder2-2" onclick="getAuctionPriceOder(1, true)">高价优先</button>
         </div>
     </div>
 </div>

@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.xjx</groupId>
     <artifactId>ddt-crawler</artifactId>
-    <version>0.0.1-SNAPSHOT</version>
+    <version>0.0.3-SNAPSHOT</version>
     <name>ddt-crawler</name>
     <description>ddt-crawler</description>
     <properties>

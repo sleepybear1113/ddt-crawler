@@ -1,14 +1,64 @@
 function saveUser() {
     let selfId = document.getElementById("selfId").value;
     let key = document.getElementById("key").value;
-    axios.get("/saveUser", {
+    let temporaryLicense = document.getElementById("temporary-license").value;
+    axios.get("user/saveUser", {
         params: {
             userId: selfId,
             key: key,
+            temporaryLicense: temporaryLicense
         }
     }).then(res => {
         // 接口数据
-        console.log(res.data)
+        let data = res.data;
+        console.log(data);
+        if (!processErrorResult(data)) {
+            return;
+        }
+
+        let success = data.result;
+        if (success) {
+            alert("成功");
+        } else {
+            alert("失败")
+        }
+    });
+}
+
+function createTemporaryLicense() {
+    let temporaryLicenseExpire = document.getElementById("temporary-license-expire").value;
+    let concurrentTime = document.getElementById("concurrent-time").value;
+    axios.get("user/createTemporaryLicense", {
+        params: {
+            expireTime: temporaryLicenseExpire,
+            concurrentTime: concurrentTime
+        }
+    }).then(res => {
+        // 接口数据
+        let data = res.data;
+        let success = processErrorResult(data);
+        if (!success) {
+            return;
+        }
+        console.log(data);
+        alert(data.result.message);
+    });
+}
+
+function deleteTemporaryLicense() {
+    let temporaryLicense = document.getElementById("temporary-license").value;
+    axios.get("user/deleteTemporaryLicense", {
+        params: {
+            temporaryLicense: temporaryLicense,
+        }
+    }).then(res => {
+        // 接口数据
+        let data = res.data;
+        let success = processErrorResult(data);
+        if (!success) {
+            return;
+        }
+        console.log(data);
     });
 }
 
@@ -60,8 +110,7 @@ function saveTemplate() {
         alert("有参数为空");
     }
 
-    let url = "/saveTemplate";
-    axios.get(url, {
+    axios.get("template/saveTemplate", {
         params: {
             templateName: templateName,
             templateId: templateId
@@ -112,9 +161,7 @@ function getAuctionItems() {
         itemName = "";
     }
 
-    let url = "/getAuctionItems";
-
-    axios.get(url, {
+    axios.get("auction/getAuctionItems", {
         params: {
             page: page,
             order: order,
@@ -159,11 +206,12 @@ function getAuctionPriceOder(priceType, sort) {
 
     if (itemName === "") {
         alert("物品名称必填");
+        return;
     }
 
-    let url = "/getAuctionPriceOder";
+    document.getElementById("result-body").innerHTML = "";
 
-    axios.get(url, {
+    axios.get("auction/getAuctionPriceOder", {
         params: {
             sort: sort,
             itemName: itemName,

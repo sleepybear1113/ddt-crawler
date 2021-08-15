@@ -4,6 +4,7 @@ import com.xjx.ddtcrawler.domain.Item;
 import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
 import com.xjx.ddtcrawler.domain.Template;
+import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.http.HttpHelper;
 import com.xjx.ddtcrawler.http.HttpResponseHelper;
@@ -24,7 +25,7 @@ import java.util.concurrent.TimeUnit;
  */
 @Component
 @Slf4j
-public class MyLogic {
+public class AuctionLogic {
 
     @Autowired
     private TemplateService templateService;
@@ -74,7 +75,7 @@ public class MyLogic {
     public Result getSingleResult(QueryUrl queryUrl) throws MyException, InterruptedException {
         List<Integer> pages = new ArrayList<>();
         pages.add(queryUrl.getPage());
-        return getResultsByBatchPages(queryUrl, pages, true, 250L);
+        return getResultsByBatchPages(queryUrl, pages, true, 250L, null, null);
     }
 
     /**
@@ -87,7 +88,7 @@ public class MyLogic {
      * @throws MyException          exception
      * @throws InterruptedException exception
      */
-    public Result getResultsByBatchPages(QueryUrl queryUrl, List<Integer> pages, boolean withTemplate, Long sleep) throws MyException, InterruptedException {
+    public Result getResultsByBatchPages(QueryUrl queryUrl, List<Integer> pages, boolean withTemplate, Long sleep, Integer priceSortType, Boolean sortOrder) throws MyException, InterruptedException {
         if (CollectionUtils.isNotEmpty(pages)) {
             pages.removeIf(p -> p <= 0);
             // 去重
@@ -106,17 +107,25 @@ public class MyLogic {
         totalResult.setItems(new ArrayList<>());
         // 默认设置为失败
         totalResult.setValue(false);
+        totalResult.setTotal(0L);
 
+        // 根据 page 循环获取
         for (int i = 0; i < pages.size(); i++) {
             int page = pages.get(i);
             queryUrl.setPage(page);
 
+            // 请求获取
             Result result = getRawResponseBody(queryUrl);
             if (!result.isSuccess()) {
                 continue;
             }
+            totalResult.setValue(true);
 
             Long total = result.getTotal();
+            totalResult.setTotal(total);
+            if (total == 0L) {
+                break;
+            }
             int ceil = (int) Math.ceil(total * 1.0 / 20) + 1;
             // 判断是否获取的页数超过了最大页数
             if (i > ceil) {
@@ -126,7 +135,6 @@ public class MyLogic {
 
             // 每次成功后 total 累加，items 累加
             totalResult.getItems().addAll(result.getItems());
-            totalResult.setValue(true);
 
             if (i + 1 < pages.size()) {
                 // 每次请求之后的时延，防止高并发
@@ -155,7 +163,10 @@ public class MyLogic {
             }
 
             totalResult.setItems(itemResult);
-            totalResult.setTotal((long) itemResult.size());
+            if (pages.size() > 1) {
+                // 当 page 超过 1 页时，返回当前数量
+                totalResult.setTotal((long) itemResult.size());
+            }
 
             // 构建 items
             totalResult.parseItems();
@@ -163,6 +174,19 @@ public class MyLogic {
             // 填充物品信息
             if (withTemplate) {
                 fillItemTemplate(totalResult);
+            }
+
+            // 排序规则
+            if (priceSortType != null) {
+                if (AuctionConstant.PriceSortTypeEnum.UNIT_PRICE_SORT.getType().equals(priceSortType)) {
+                    totalResult.getItems().sort(Comparator.comparing(Item::getUnitPrice));
+                } else if (AuctionConstant.PriceSortTypeEnum.UNIT_MOUTHFUL_PRICE_SORT.getType().equals(priceSortType)) {
+                    totalResult.getItems().sort(Comparator.comparing(Item::getUnitMouthfulPrice));
+                }
+
+                if (AuctionConstant.SortOrderEnum.DESC.getType().equals(sortOrder)) {
+                    Collections.reverse(totalResult.getItems());
+                }
             }
         }
 

@@ -1,14 +1,14 @@
 package com.xjx.ddtcrawler.task;
 
 import com.xjx.ddtcrawler.cache.CommonCache;
-import com.xjx.ddtcrawler.cache.UserInfoCache;
+import com.xjx.ddtcrawler.cache.WebUserCache;
+import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.domain.Item;
 import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
-import com.xjx.ddtcrawler.domain.UserInfo;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
 import com.xjx.ddtcrawler.exception.MyException;
-import com.xjx.ddtcrawler.logic.MyLogic;
+import com.xjx.ddtcrawler.logic.AuctionLogic;
 import com.xjx.ddtcrawler.service.ItemService;
 import com.xjx.ddtcrawler.utils.ThreadPoolUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -31,13 +31,13 @@ public class ItemTask {
     public static final String ITEM_TASK_LAST_AUCTION_TIME = "item_task_last_auction_time";
 
     @Autowired
-    private MyLogic myLogic;
+    private AuctionLogic auctionLogic;
     @Autowired
     private ItemService itemService;
     @Autowired
     private CommonCache commonCache;
     @Autowired
-    private UserInfoCache userInfoCache;
+    private WebUserCache webUserCache;
 
     public void initAuctionId() {
         long maxAuctionId = itemService.getMaxAuctionId();
@@ -47,13 +47,13 @@ public class ItemTask {
         log.info("当前数据库最大的 auctionId = " + maxAuctionId);
     }
 
-    public Long getLatestAuctionId(UserInfo userInfo) throws MyException {
+    public Long getLatestAuctionId(WebUser webUser) throws MyException {
         QueryUrl queryUrl = new QueryUrl();
         queryUrl.setOrder(AuctionConstant.OrderEnum.TIME.getValue());
         queryUrl.setSort(true);
-        queryUrl.setUserInfo(userInfo);
+        queryUrl.setWebUser(webUser);
 
-        Result result = myLogic.getItemsWithFillItemInfo(queryUrl, false);
+        Result result = auctionLogic.getItemsWithFillItemInfo(queryUrl, false);
         if (result == null) {
             return null;
         }
@@ -91,13 +91,9 @@ public class ItemTask {
         return maxAuctionId;
     }
 
-    public String startTask(Long selfId) {
-        if (selfId == null) {
-            return "user 为空";
-        }
-        UserInfo userInfo = userInfoCache.getByUserId(selfId);
-        if (userInfo == null) {
-            return "user key 不存在";
+    public String startTask(WebUser webUser) throws MyException {
+        if (webUser == null) {
+            throw new MyException("user 为空");
         }
 
         Object cache = commonCache.getCache(ITEM_TASK_KEY);
@@ -114,7 +110,7 @@ public class ItemTask {
                 // 15 分钟锁
                 commonCache.setCache(ITEM_TASK_KEY, 1, 1000 * 60 * 15L);
                 log.info("获取次数：" + count++);
-                delay = singleTask(userInfo);
+                delay = singleTask(webUser);
                 sleep(delay);
             } while (delay > 0);
             commonCache.delCache(ITEM_TASK_KEY);
@@ -125,7 +121,7 @@ public class ItemTask {
         return "start";
     }
 
-    public long singleTask(UserInfo userInfo) {
+    public long singleTask(WebUser webUser) {
         long nextDelayTime;
         int maxRetryTimes = 3;
         Long auctionId = null;
@@ -139,7 +135,7 @@ public class ItemTask {
 
             // 获取拍卖场并且写入数据库，返回最大的 id
             try {
-                auctionId = getLatestAuctionId(userInfo);
+                auctionId = getLatestAuctionId(webUser);
             } catch (Exception e) {
                 log.error("获取拍卖场数据失败", e);
             }
@@ -159,7 +155,7 @@ public class ItemTask {
         long now = System.currentTimeMillis();
 
         // 上一次的时间
-        Long lastAuctionTime = (Long) commonCache.getCache(ITEM_TASK_LAST_AUCTION_TIME);
+        Long lastAuctionTime = commonCache.getCache(ITEM_TASK_LAST_AUCTION_TIME);
         // 两次 auction 差值
         long subAuction = auctionId - latestAuctionId;
         log.info("与上次记录的差值：" + subAuction);

@@ -8,6 +8,7 @@ import com.thoughtworks.xstream.annotations.XStreamImplicit;
 import com.thoughtworks.xstream.io.xml.DomDriver;
 import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 
 import java.io.Serializable;
 import java.util.List;
@@ -57,7 +58,7 @@ public class Result implements Serializable {
     public static Result parseResult(String s) {
         Result result;
         try {
-            result = (Result) xStream.fromXML(s.replace("&#x8;", "\t"));
+            result = (Result) xStream.fromXML(s.replace("&#", "\t"));
             return result;
         } catch (Exception e) {
             e.printStackTrace();
@@ -79,6 +80,35 @@ public class Result implements Serializable {
 
         for (Item item : this.items) {
             item.buildSelf();
+        }
+    }
+
+    public void hideSensitiveInfo() {
+        List<Item> items = this.items;
+        if (CollectionUtils.isEmpty(items)) {
+            return;
+        }
+        for (Item item : items) {
+            item.setBuyerId(null);
+            String buyerName = item.getBuyerName();
+            if (StringUtils.isNotBlank(buyerName)) {
+                item.setBuyerName("有");
+            }
+            item.setAuctioneerId(null);
+            item.setTemplateId(null);
+            item.setBeginDate(null);
+            item.setAuctionDate(null);
+            item.setItemDate(null);
+            item.setBeginTimeString(null);
+            item.setPic(null);
+            item.setUserDefinePrice(null);
+            Long beginTime = item.getBeginTime();
+            item.setBeginTime(null);
+
+            if (beginTime != null) {
+                long v = (System.currentTimeMillis() - beginTime) / 1000 / 3600;
+                item.setBeginTimeString(String.valueOf(v));
+            }
         }
     }
 

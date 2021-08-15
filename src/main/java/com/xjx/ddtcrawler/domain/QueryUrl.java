@@ -1,5 +1,6 @@
 package com.xjx.ddtcrawler.domain;
 
+import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
 import com.xjx.ddtcrawler.exception.MyException;
 import lombok.Data;
@@ -74,15 +75,15 @@ public class QueryUrl {
     /**
      * false 为升序，true 为降序
      */
-    private Boolean sort = true;
+    private Boolean sort = AuctionConstant.SortOrderEnum.DESC.getType();
 
-    public void setUserInfo(UserInfo userInfo) {
-        if (userInfo == null) {
+    public void setWebUser(WebUser webUser) {
+        if (webUser == null) {
             return;
         }
 
-        this.key = userInfo.getKey();
-        this.selfId = userInfo.getId();
+        this.key = webUser.getKey();
+        this.selfId = webUser.getUserId();
     }
 
     /**

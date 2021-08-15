@@ -69,4 +69,58 @@ public class AuctionConstant {
             return type;
         }
     }
+
+    /**
+     * 后端进行的排序规则
+     */
+    public enum PriceSortTypeEnum {
+        /**
+         * 不进行价格排序
+         */
+        NONE_SORT(0),
+        /**
+         * 竞拍价排序
+         */
+        UNIT_PRICE_SORT(1),
+        /**
+         * 一口价排序
+         */
+        UNIT_MOUTHFUL_PRICE_SORT(2),
+        ;
+        private final Integer type;
+
+        PriceSortTypeEnum(Integer i) {
+            this.type = i;
+        }
+
+        public Integer getType() {
+            return type;
+        }
+    }
+
+    public enum SortOrderEnum {
+        /**
+         * 不排序
+         */
+        NONE_ORDER(null),
+        /**
+         * 升序
+         */
+        ASC(false),
+        /**
+         * 降序
+         */
+        DESC(true),
+        ;
+        private final Boolean type;
+
+        SortOrderEnum(Boolean type) {
+            this.type = type;
+        }
+
+        public Boolean getType() {
+            return type;
+        }
+    }
+
 }

@@ -1,9 +1,9 @@
 package com.xjx.ddtcrawler.utils;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.FastDateFormat;
 
 import java.text.ParseException;
-import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -13,8 +13,14 @@ import java.util.TimeZone;
  */
 public class TimeUtil {
     private static final String SDF_PATTEN = "yyyy-MM-dd HH:mm:ss";
-    private static final TimeZone TZ = TimeZone.getTimeZone("Asia/Shanghai");
-    private static final SimpleDateFormat SDF = new SimpleDateFormat(SDF_PATTEN);
+    public static final FastDateFormat FAST_DATE_FORMAT = FastDateFormat.getInstance("yyyy-MM-dd HH:mm:ss", TimeZone.getTimeZone("Asia/Shanghai"));
+
+    public static String timestampToString(Long t) {
+        if (t == null) {
+            return null;
+        }
+        return FAST_DATE_FORMAT.format(t);
+    }
 
     /**
      * 字符串转 {@link Date}
@@ -23,12 +29,11 @@ public class TimeUtil {
      * @return {@link Date}
      */
     public static Date convertStringDate(String s) {
-        SDF.setTimeZone(TZ);
         if (StringUtils.isBlank(s)) {
             return null;
         }
         try {
-            return SDF.parse(s);
+            return FAST_DATE_FORMAT.parse(s);
         } catch (ParseException e) {
             e.printStackTrace();
             return null;
