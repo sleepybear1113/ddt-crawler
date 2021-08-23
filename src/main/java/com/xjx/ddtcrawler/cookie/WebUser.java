@@ -1,8 +1,10 @@
 package com.xjx.ddtcrawler.cookie;
 
+import com.xjx.ddtcrawler.cache.CacheDomain;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
@@ -12,8 +14,9 @@ import java.io.Serializable;
  * @author XieJiaxing
  * @date 2021/8/14 12:29
  */
+@EqualsAndHashCode(callSuper = true)
 @Data
-public class WebUser implements Serializable {
+public class WebUser extends CacheDomain implements Serializable {
     private static final long serialVersionUID = 5392034256168678992L;
 
     public static final ThreadLocal<WebUser> WEB_USER_THREAD_LOCAL = new ThreadLocal<>();
@@ -22,12 +25,11 @@ public class WebUser implements Serializable {
     private Long loginTime;
     private Long userId;
     private String key;
-    private Long expireTimeAt;
     private String temporaryLicense;
     /**
      * 用户并发毫秒
      */
-    private Long concurrentTime = 1000L;
+    private Long concurrentTime = 500L;
 
     public static void setWebUser(WebUser webUser) {
         WEB_USER_THREAD_LOCAL.set(webUser);
@@ -42,7 +44,7 @@ public class WebUser implements Serializable {
         if (webUser == null) {
             throw new MyException("用户不存在或者已过期");
         }
-        Long expireTimeAt = webUser.getExpireTimeAt();
+        Long expireTimeAt = webUser.getExpireAt();
         if (expireTimeAt != null && expireTimeAt < System.currentTimeMillis()) {
             throw new MyException("用户不存在或者已过期");
         }

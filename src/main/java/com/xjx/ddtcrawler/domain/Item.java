@@ -3,6 +3,7 @@ package com.xjx.ddtcrawler.domain;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
+import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import com.xjx.ddtcrawler.utils.TimeUtil;
 import lombok.Data;
 
@@ -162,6 +163,29 @@ public class Item implements Serializable {
      * 用户定义的低价
      */
     private Double userDefinePrice;
+    private Boolean isTemplateIdEncrypted = false;
+
+    public void encryptTemplateId() {
+        if (this.isTemplateIdEncrypted == null) {
+            this.isTemplateIdEncrypted = false;
+        }
+        if (this.isTemplateIdEncrypted) {
+            return;
+        }
+        this.templateId = EncryptedUtils.encryptTemplateId(this.templateId);
+        this.isTemplateIdEncrypted = true;
+    }
+
+    public void decryptTemplateId() {
+        if (this.isTemplateIdEncrypted == null) {
+            this.isTemplateIdEncrypted = false;
+        }
+        if (!this.isTemplateIdEncrypted) {
+            return;
+        }
+        this.templateId = EncryptedUtils.decryptTemplateId(this.templateId);
+        this.isTemplateIdEncrypted = false;
+    }
 
     @Override
     public String toString() {

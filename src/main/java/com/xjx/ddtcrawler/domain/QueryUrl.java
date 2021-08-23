@@ -98,7 +98,9 @@ public class QueryUrl {
         rnd = RANDOM.nextDouble();
         String format = "?page=%s&selfid=%s&type=%s&Auctions=%s&buyID=%s&key=%s&name=%s&userId=%s&rnd=%s&pay=%s&order=%s&sort=%s";
 
-        return URL + String.format(format, page, selfId, type, auctions, buyId, key, ec(name), userId, rnd, pay, order, sort);
+        String url = URL + String.format(format, page, selfId, type, auctions, buyId, key, ec(name), userId, rnd, pay, order, sort);
+        log.info(url);
+        return url;
     }
 
     /**

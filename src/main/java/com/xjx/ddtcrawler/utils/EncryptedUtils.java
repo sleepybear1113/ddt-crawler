@@ -48,4 +48,27 @@ public class EncryptedUtils {
         String substring = s.substring(1, s.length() - 1);
         return Long.parseLong(substring) ^ KEY;
     }
+
+    public static Long encryptTemplateId(Long id) {
+        String s = encryptUserId(id);
+        if (StringUtils.isBlank(s)) {
+            return null;
+        }
+
+        return Long.valueOf(s);
+    }
+
+    public static Long decryptTemplateId(Long id) {
+        if (id == null) {
+            return null;
+        }
+
+        String s = String.valueOf(id);
+        if (StringUtils.isBlank(s) || s.length() <= 2 || !StringUtils.isNumeric(s)) {
+            return null;
+        }
+
+        String substring = s.substring(1, s.length() - 1);
+        return Long.parseLong(substring) ^ KEY;
+    }
 }

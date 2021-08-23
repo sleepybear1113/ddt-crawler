@@ -130,6 +130,7 @@ function getAuctionItems() {
     let itemName = document.getElementById("itemName").value;
     let selfId = document.getElementById("selfId").value;
     let userId = document.getElementById("userId").value;
+    let buyerId = document.getElementById("buyerId").value;
 
     let orderTime = document.getElementById("orderTime");
     let orderName = document.getElementById("orderName");
@@ -168,7 +169,8 @@ function getAuctionItems() {
             sort: sort,
             itemName: itemName,
             userId: userId,
-            selfId: selfId
+            selfId: selfId,
+            buyerId: buyerId
         }
     }).then(res => {
         // 接口数据
@@ -295,26 +297,54 @@ function Item(auctionID, auctioneerID, auctioneerName, beginTimeString, buyerID,
     this.userDefinePrice = userDefinePrice;
 }
 
+function buildTableHtml(item, i) {
+    let bidUnitColor = "bid-unit-black";
+    let mouthUnitColor = "mouth-unit-black";
+    let buyStatus = "has-not-buyer";
+    let userDefinePrice = "";
+
+    if (item == null) {
+        item = new Item();
+    } else {
+        item.unitPrice = parseFloat(item.unitPrice.toFixed(2));
+        item.unitMouthfulPrice = parseFloat(item.unitMouthfulPrice.toFixed(2));
+
+        if (item.userDefinePrice != null) {
+            userDefinePrice = item.userDefinePrice;
+            if (item.unitPrice > 0 && item.userDefinePrice > item.unitPrice) {
+                bidUnitColor = "bid-unit-red";
+            }
+
+            if (item.unitMouthfulPrice > 0 && item.userDefinePrice > item.unitMouthfulPrice) {
+                mouthUnitColor = "mouth-unit-red";
+            }
+        }
+
+        if (item.buyerName != null && item.buyerName !== "") {
+            buyStatus = "has-buyer";
+        }
+    }
+
+    return `
+            <tr>\n
+                <th>${i}</th>
+                <th class="table-item-name ${buyStatus}">${item.templateName}</th>
+                <th>${item.count}</th>
+                <th>${item.price}</th>
+                <th>${item.mouthful}</th>
+                <th class="${bidUnitColor}">${item.unitPrice}</th>
+                <th class="${mouthUnitColor}">${item.unitMouthfulPrice}</th>
+                <th class="expected-price">${userDefinePrice}</th>
+                <th class="table-seller">${item.auctioneerName}</th>
+                <th class="table-time">${item.beginTimeString}</th>
+                <th>${item.validDate}</th>
+                <th>${item.templateId}</th>
+                <th>${item.pic}</th>
+                <th>${item.buyerName}</th>
+            </tr>`;
+}
 
 function buildTable(items) {
-    let tableHtml = '' +
-        '    <tr>\n' +
-        '        <th>序号</th>\n' +
-        '        <th class="table-item-name has-not-buyer">物品名称</th>\n' +
-        '        <th>数量</th>\n' +
-        '        <th>竞拍价</th>\n' +
-        '        <th>一口价</th>\n' +
-        '        <th class="bid-unit-black">竞拍价单价</th>\n' +
-        '        <th class="mouth-unit-black">一口价单价</th>\n' +
-        '        <th class="expected-price">期望价格</th>\n' +
-        '        <th class="table-seller">出售者</th>\n' +
-        '        <th class="table-time">时间</th>\n' +
-        '        <th>有效期</th>\n' +
-        '        <th>templateId</th>\n' +
-        '        <th>pic</th>\n' +
-        '        <th>竞拍</th>\n' +
-        '    </tr>';
-
     let resultBody = document.getElementById("result-body");
     resultBody.innerHTML = "";
     if (items == null || items.length === 0) {
@@ -326,48 +356,10 @@ function buildTable(items) {
     let tidSame = true;
     for (let i = 0; i < items.length; i++) {
         let item = items[i];
-        item.unitPrice = parseFloat(item.unitPrice.toFixed(2));
-        item.unitMouthfulPrice = parseFloat(item.unitMouthfulPrice.toFixed(2));
-        let htmlTemp = tableHtml
-            .replace("序号", i)
-            .replace("物品名称", item.templateName)
-            .replace("数量", item.count)
-            .replace("竞拍价", item.price)
-            .replace("一口价", item.mouthful)
-            .replace("竞拍价单价", item.unitPrice)
-            .replace("一口价单价", item.unitMouthfulPrice)
-            .replace("期望价格", item.userDefinePrice == null ? "" : item.userDefinePrice)
-            .replace("出售者", item.auctioneerName)
-            .replace("时间", item.beginTimeString)
-            .replace("有效期", item.validDate)
-            .replace("templateId", item.templateId)
-            .replace("pic", item.pic)
-            .replace("竞拍", item.buyerName)
-        ;
-        if (item.userDefinePrice != null) {
-            if (item.unitPrice > 0 && item.userDefinePrice > item.unitPrice) {
-                console.log(item.userDefinePrice);
-                console.log(item.unitPrice);
-                console.log(item.userDefinePrice > item.unitPrice);
-                console.log()
-                htmlTemp = htmlTemp.replace("bid-unit-black", "bid-unit-red");
-            }
-
-            if (item.unitMouthfulPrice > 0 && item.userDefinePrice > item.unitMouthfulPrice) {
-                htmlTemp = htmlTemp.replace("mouth-unit-black", "mouth-unit-red");
-            }
-
-
-        }
-
-        if (item.buyerName != null && item.buyerName !== "") {
-            htmlTemp = htmlTemp.replace("has-not-buyer", "has-buyer");
-        }
         if (item.templateId !== tid) {
-
             tidSame = false;
         }
-        innerHtml += htmlTemp;
+        innerHtml += buildTableHtml(item, i);
     }
     if (tidSame) {
         document.getElementById("template-id").value = tid;
@@ -377,4 +369,3 @@ function buildTable(items) {
 
     resultBody.innerHTML = innerHtml;
 }
-

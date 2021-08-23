@@ -42,4 +42,8 @@
             #{id}
         </foreach>
     </select>
+    <select id="getAll" resultType="com.xjx.ddtcrawler.domain.Template">
+        select *
+        from ddt.template
+    </select>
 </mapper>

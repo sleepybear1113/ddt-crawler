@@ -1,5 +1,6 @@
 package com.xjx.ddtcrawler.cache;
 
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -10,10 +11,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/8/7 17:33
  */
 @Component
-public class CommonCache {
+public class CommonCache implements CacheInterface {
     private final Map<String, CacheDomain> CACHE_MAP = new ConcurrentHashMap<>();
 
     public void setCache(String key, Object value, Long expireTime) {
+        if (value == null) {
+            return;
+        }
         Long expireAt = null;
         if (expireTime != null) {
             expireAt = System.currentTimeMillis() + expireTime;
@@ -48,5 +52,14 @@ public class CommonCache {
         } catch (Exception e) {
             return null;
         }
+    }
+
+    @Override
+    public void clearExpired() {
+        if (MapUtils.isEmpty(CACHE_MAP)) {
+            return;
+        }
+
+        CACHE_MAP.values().removeIf(CacheDomain::isExpired);
     }
 }

@@ -51,13 +51,16 @@ public class UserController {
         }
 
         long minConcurrentTime = 100L;
+        if (concurrentTime < webUser.getConcurrentTime()) {
+            concurrentTime = webUser.getConcurrentTime();
+        }
         if (concurrentTime < minConcurrentTime) {
             concurrentTime = minConcurrentTime;
         }
 
         long now = System.currentTimeMillis();
         if (expireTime != null) {
-            webUser.setExpireTimeAt(expireTime * 1000 + now);
+            webUser.setExpireAt(expireTime * 1000 + now);
         }
         webUser.setConcurrentTime(concurrentTime);
         String temporaryLicense = webUserLogic.generateTemporaryLicense(webUser);

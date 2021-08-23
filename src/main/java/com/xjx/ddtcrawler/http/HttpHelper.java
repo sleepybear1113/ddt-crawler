@@ -2,6 +2,7 @@ package com.xjx.ddtcrawler.http;
 
 import com.xjx.ddtcrawler.http.enumeration.MethodEnum;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.http.*;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.config.CookieSpecs;
@@ -10,6 +11,7 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.CloseableHttpResponse;
 import org.apache.http.client.utils.HttpClientUtils;
 import org.apache.http.conn.params.ConnRouteParams;
+import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.cookie.Cookie;
 import org.apache.http.entity.ContentType;
 import org.apache.http.entity.StringEntity;
@@ -17,8 +19,12 @@ import org.apache.http.impl.client.BasicCookieStore;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 
+import javax.net.ssl.*;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.security.KeyManagementException;
+import java.security.NoSuchAlgorithmException;
+import java.security.cert.X509Certificate;
 import java.util.List;
 
 /**
@@ -35,7 +41,31 @@ public class HttpHelper {
     public HttpHelper(HttpRequestMaker httpRequestMaker) {
         this.httpRequestMaker = httpRequestMaker;
         httpCookieStore = new BasicCookieStore();
-        this.httpClient = HttpClientBuilder.create().setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).setDefaultCookieStore(httpCookieStore).build();
+        X509TrustManager x509mgr = new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] xcs, String string) {
+            }
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] xcs, String string) {
+            }
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return null;
+            }
+        };
+        SSLConnectionSocketFactory sslsf = null;
+        try {
+            SSLContext sslContext = SSLContext.getInstance("TLS");
+            sslContext.init(null, new TrustManager[]{x509mgr}, null);
+            HostnameVerifier hostnameVerifier = (hostname, session) -> true;
+            sslsf = new SSLConnectionSocketFactory(sslContext, hostnameVerifier);
+        } catch (NoSuchAlgorithmException | KeyManagementException e) {
+            e.printStackTrace();
+        }
+
+        this.httpClient = HttpClientBuilder.create().setSSLSocketFactory(sslsf).setDefaultRequestConfig(RequestConfig.custom().setCookieSpec(CookieSpecs.STANDARD).build()).setDefaultCookieStore(httpCookieStore).build();
     }
 
     public HttpHelper(String url, MethodEnum methodEnum) {

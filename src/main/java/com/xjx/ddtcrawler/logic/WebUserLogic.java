@@ -1,11 +1,9 @@
 package com.xjx.ddtcrawler.logic;
 
-import com.xjx.ddtcrawler.cache.CommonCache;
 import com.xjx.ddtcrawler.cache.WebUserCache;
 import com.xjx.ddtcrawler.cookie.CookieHelper;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.exception.MyException;
-import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -43,7 +41,7 @@ public class WebUserLogic {
 
         int maxAge = CookieHelper.COOKIE_MAX_AGE;
         if (expireTime != null) {
-            webUser.setExpireTimeAt(expireTime + now);
+            webUser.setExpireAt(expireTime + now);
             maxAge = (int) (expireTime / 1000);
         }
         String id = webUserCache.saveUser(webUser);
@@ -97,7 +95,7 @@ public class WebUserLogic {
         }
 
         int maxAge = CookieHelper.COOKIE_MAX_AGE;
-        Long expireTimeAt = webUser.getExpireTimeAt();
+        Long expireTimeAt = webUser.getExpireAt();
         if (expireTimeAt != null) {
             if (expireTimeAt < System.currentTimeMillis()) {
                 // webUser 已经过期，删除 cookie

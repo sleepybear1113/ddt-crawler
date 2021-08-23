@@ -24,6 +24,7 @@ public class AuctionController {
     @RequestMapping("/auction/getAuctionItems")
     public Result getItems(@RequestParam(required = false, defaultValue = "1") Integer page,
                            @RequestParam(required = false, defaultValue = "-1") Long userId,
+                           @RequestParam(required = false, defaultValue = "-1") Long buyerId,
                            @RequestParam(required = false, defaultValue = "") String itemName,
                            @RequestParam(required = false, defaultValue = "2") Integer order,
                            @RequestParam(required = false, defaultValue = "true") Boolean sort) throws MyException, InterruptedException {
@@ -41,11 +42,13 @@ public class AuctionController {
         queryUrl.setWebUser(webUser);
         queryUrl.setOrder(order);
         queryUrl.setUserId(userId);
+        queryUrl.setBuyId(buyerId);
         queryUrl.setSort(sort);
         queryUrl.setPage(page);
         queryUrl.setName(itemName.trim());
         if (temporaryUser) {
             queryUrl.setUserId(-1L);
+            queryUrl.setBuyId(-1L);
         }
 
         Result result = auctionLogic.getSingleResult(queryUrl);
@@ -71,7 +74,7 @@ public class AuctionController {
         queryUrl.setSort(sort);
         queryUrl.setName(itemName.trim());
 
-        Result result = auctionLogic.getResultsByBatchPages(queryUrl, QueryUrl.DEFAULT_PAGES, true, 250L, priceType, sort);
+        Result result = auctionLogic.getResultsByBatchPages(queryUrl, QueryUrl.DEFAULT_PAGES, true, 250L, priceType, sort, null);
         if (webUser.isTemporaryUser()) {
             result.hideSensitiveInfo();
         }

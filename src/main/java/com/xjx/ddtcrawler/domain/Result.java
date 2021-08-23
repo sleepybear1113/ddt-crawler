@@ -95,7 +95,6 @@ public class Result implements Serializable {
                 item.setBuyerName("有");
             }
             item.setAuctioneerId(null);
-            item.setTemplateId(null);
             item.setBeginDate(null);
             item.setAuctionDate(null);
             item.setItemDate(null);
@@ -104,6 +103,7 @@ public class Result implements Serializable {
             item.setUserDefinePrice(null);
             Long beginTime = item.getBeginTime();
             item.setBeginTime(null);
+            item.encryptTemplateId();
 
             if (beginTime != null) {
                 long v = (System.currentTimeMillis() - beginTime) / 1000 / 3600;

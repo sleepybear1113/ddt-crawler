@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 /**
  * @author XieJiaxing
  * @date 2021/8/14 18:33
@@ -26,7 +28,6 @@ public class TemplateController {
         return templateLogic.getTemplateById(id);
     }
 
-
     @RequestMapping("/template/saveTemplate")
     public Boolean saveTemplate(Long templateId, String templateName) throws MyException {
         WebUser webUser = WebUser.getSafeWebUser();
@@ -34,5 +35,15 @@ public class TemplateController {
             throw new MyException("无权操作该接口");
         }
         return templateLogic.saveTemplate(templateId, templateName);
+    }
+
+    @RequestMapping("/template/listAllTemplates")
+    public List<Template> listAllTemplates() {
+        return templateLogic.listAllTemplates();
+    }
+
+    @RequestMapping("/template/listCommonSlv4")
+    public List<Template> listCommonSlv4() {
+        return templateLogic.listCommonSlv4();
     }
 }

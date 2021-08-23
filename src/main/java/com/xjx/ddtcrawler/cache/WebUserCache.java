@@ -1,7 +1,7 @@
 package com.xjx.ddtcrawler.cache;
 
 import com.xjx.ddtcrawler.cookie.WebUser;
-import com.xjx.ddtcrawler.utils.EncryptedUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Component;
 
@@ -13,7 +13,7 @@ import java.util.concurrent.ConcurrentHashMap;
  * @date 2021/8/1 22:56
  */
 @Component
-public class WebUserCache {
+public class WebUserCache implements CacheInterface {
     private final static Map<String, WebUser> MAP = new ConcurrentHashMap<>();
 
     public WebUser getById(String id) {
@@ -25,7 +25,7 @@ public class WebUserCache {
             return null;
         }
 
-        Long expireTimeAt = webUser.getExpireTimeAt();
+        Long expireTimeAt = webUser.getExpireAt();
         if (expireTimeAt == null) {
             return webUser;
         } else {
@@ -49,7 +49,7 @@ public class WebUserCache {
 
         Long userId = webUser.getUserId();
         String key = webUser.getKey();
-        Long expireTimeAt = webUser.getExpireTimeAt();
+        Long expireTimeAt = webUser.getExpireAt();
         if (userId == null || StringUtils.isBlank(key)) {
             return null;
         }
@@ -83,5 +83,14 @@ public class WebUserCache {
         }
 
         MAP.remove(id);
+    }
+
+    @Override
+    public void clearExpired() {
+        if (MapUtils.isEmpty(MAP)) {
+            return;
+        }
+
+        MAP.values().removeIf(CacheDomain::isExpired);
     }
 }

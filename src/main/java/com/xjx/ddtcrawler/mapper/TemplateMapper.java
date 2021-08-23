@@ -15,6 +15,8 @@ public interface TemplateMapper {
 
     List<Template> getByIds(List<Long> ids);
 
+    List<Template> getAll();
+
     void add(Template template);
 
     void update(Template template);

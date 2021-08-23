@@ -75,20 +75,29 @@ public class AuctionLogic {
     public Result getSingleResult(QueryUrl queryUrl) throws MyException, InterruptedException {
         List<Integer> pages = new ArrayList<>();
         pages.add(queryUrl.getPage());
-        return getResultsByBatchPages(queryUrl, pages, true, 250L, null, null);
+        Long userId = queryUrl.getUserId();
+        Long buyId = queryUrl.getBuyId();
+        if ((userId != null && userId > 0) || (buyId != null && buyId > 0)) {
+            pages = QueryUrl.DEFAULT_PAGES;
+        }
+        return getResultsByBatchPages(queryUrl, pages, true, 250L, null, null, null);
     }
 
     /**
      * 批量获取多页的拍卖场物品信息
      *
-     * @param queryUrl queryUrl
-     * @param pages    页码集合
-     * @param sleep    时延，毫秒
+     * @param queryUrl      queryUrl
+     * @param pages         页码集合
+     * @param withTemplate  withTemplate
+     * @param sleep         延迟毫秒
+     * @param priceSortType 价格排序规则，竞拍单价、一口单价
+     * @param sortOrder     排序规则，{@link AuctionConstant.PriceSortTypeEnum}
+     * @param minAuctionId  最小的 auctionId，如果获取到的 result 里面的 auctionId 小于入参，那么结束循环
      * @return Result
-     * @throws MyException          exception
-     * @throws InterruptedException exception
+     * @throws MyException          Exception
+     * @throws InterruptedException Exception
      */
-    public Result getResultsByBatchPages(QueryUrl queryUrl, List<Integer> pages, boolean withTemplate, Long sleep, Integer priceSortType, Boolean sortOrder) throws MyException, InterruptedException {
+    public Result getResultsByBatchPages(QueryUrl queryUrl, List<Integer> pages, boolean withTemplate, Long sleep, Integer priceSortType, Boolean sortOrder, Long minAuctionId) throws MyException, InterruptedException {
         if (CollectionUtils.isNotEmpty(pages)) {
             pages.removeIf(p -> p <= 0);
             // 去重
@@ -133,8 +142,10 @@ public class AuctionLogic {
                 i = pages.size();
             }
 
+            List<Item> items = result.getItems();
+
             // 每次成功后 total 累加，items 累加
-            totalResult.getItems().addAll(result.getItems());
+            totalResult.getItems().addAll(items);
 
             if (i + 1 < pages.size()) {
                 // 每次请求之后的时延，防止高并发
