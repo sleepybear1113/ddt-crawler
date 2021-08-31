@@ -5,7 +5,7 @@ import org.apache.commons.lang3.StringUtils;
 import java.util.Random;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 19:20
  */
 public class EncryptedUtils {

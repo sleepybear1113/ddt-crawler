@@ -13,7 +13,7 @@ import org.springframework.scheduling.annotation.Scheduled;
 import java.util.Random;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/21 17:29
  */
 @Configuration

@@ -5,7 +5,7 @@ import com.xjx.ddtcrawler.vo.ResultCodeConstant;
 import java.io.Serializable;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 22:52
  */
 public class MyException extends Exception implements Serializable {

@@ -16,7 +16,7 @@ import org.springframework.web.servlet.mvc.method.annotation.ResponseBodyAdvice;
 import javax.servlet.http.HttpServletRequest;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/10 1:59
  */
 @RestControllerAdvice

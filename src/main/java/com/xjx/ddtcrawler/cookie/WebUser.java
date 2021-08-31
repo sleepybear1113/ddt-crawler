@@ -11,7 +11,7 @@ import org.springframework.beans.BeanUtils;
 import java.io.Serializable;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 12:29
  */
 @EqualsAndHashCode(callSuper = true)

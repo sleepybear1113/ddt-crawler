@@ -6,7 +6,7 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 20:40
  */
 @Repository

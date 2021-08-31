@@ -5,7 +5,7 @@ import com.xjx.ddtcrawler.utils.TimeUtil;
 import org.apache.commons.lang3.RandomStringUtils;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 15:25
  */
 public class Test {

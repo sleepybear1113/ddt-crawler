@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 12:29
  */
 public class CookieHelper {

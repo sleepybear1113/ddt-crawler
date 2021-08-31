@@ -6,7 +6,7 @@ import lombok.Data;
 import java.io.Serializable;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 20:56
  */
 @Data
