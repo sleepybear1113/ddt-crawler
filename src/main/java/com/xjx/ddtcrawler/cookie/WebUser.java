@@ -71,15 +71,28 @@ public class WebUser extends CacheDomain implements Serializable {
     }
 
     public boolean isAdmin() {
-        return isInSpecificUserId(this.userId) && !isTemporaryUser();
+        return isInAdminUserId(this.userId) && !isTemporaryUser();
     }
 
-    public static boolean isInSpecificUserId(Long userId) {
+    public boolean isSpecificUser() {
+        return isAdmin() || (isInSpecificUserId(this.userId) && !isTemporaryUser());
+    }
+
+    public static boolean isInAdminUserId(Long userId) {
         if (userId == null) {
             return false;
         }
         long s001 = 45801399L;
         long h2 = 45809800L;
         return s001 == userId || h2 == userId;
+    }
+
+    public static boolean isInSpecificUserId(Long userId) {
+        if (userId == null) {
+            return false;
+        }
+        long out1 = 45775397L;
+        long out2 = 45814178L;
+        return out1 == userId || out2 == userId;
     }
 }

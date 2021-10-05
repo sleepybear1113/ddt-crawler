@@ -25,7 +25,7 @@ public class WebUserLogic {
             log.info("userId 为空");
             return;
         }
-        if (!WebUser.isInSpecificUserId(userId)) {
+        if (!(WebUser.isInSpecificUserId(userId) || WebUser.isInAdminUserId(userId))) {
             throw new MyException("暂不支持其他id登录");
         }
         if (StringUtils.isBlank(key)) {
