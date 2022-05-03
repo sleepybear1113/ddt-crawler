@@ -9,7 +9,7 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 12:29
  */
 public class CookieHelper {

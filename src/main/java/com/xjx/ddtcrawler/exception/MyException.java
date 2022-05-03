@@ -6,7 +6,7 @@ import java.io.Serial;
 import java.io.Serializable;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 22:52
  */
 public class MyException extends RuntimeException implements Serializable {

@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 21:15
  */
 @RestController

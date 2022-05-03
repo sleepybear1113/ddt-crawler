@@ -13,7 +13,7 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.stereotype.Component;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/15 2:01
  */
 @Component

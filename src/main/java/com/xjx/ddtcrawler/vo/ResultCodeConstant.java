@@ -1,7 +1,7 @@
 package com.xjx.ddtcrawler.vo;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/10 0:38
  */
 public class ResultCodeConstant {

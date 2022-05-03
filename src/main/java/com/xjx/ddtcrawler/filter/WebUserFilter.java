@@ -12,7 +12,7 @@ import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 15:32
  */
 @Slf4j

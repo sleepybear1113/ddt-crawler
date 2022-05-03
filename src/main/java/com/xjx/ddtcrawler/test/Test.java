@@ -11,7 +11,7 @@ import java.util.concurrent.TimeUnit;
 import static com.google.common.base.Preconditions.checkNotNull;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 15:25
  */
 public class Test {

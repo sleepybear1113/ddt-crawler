@@ -8,7 +8,7 @@ import java.util.Date;
 import java.util.TimeZone;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/7 14:01
  */
 public class TimeUtil {

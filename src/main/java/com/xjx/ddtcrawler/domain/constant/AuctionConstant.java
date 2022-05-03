@@ -1,7 +1,7 @@
 package com.xjx.ddtcrawler.domain.constant;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/1 16:13
  */
 public class AuctionConstant {

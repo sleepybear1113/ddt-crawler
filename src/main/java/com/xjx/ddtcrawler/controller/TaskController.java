@@ -7,7 +7,7 @@ import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
- * @author XieJiaxing
+ * @author XJX
  * @date 2021/8/14 18:40
  */
 @RestController
