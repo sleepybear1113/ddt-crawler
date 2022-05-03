@@ -26,15 +26,13 @@ public class WebUserCache implements CacheInterface {
         }
 
         Long expireTimeAt = webUser.getExpireAt();
-        if (expireTimeAt == null) {
-            return webUser;
-        } else {
+        if (expireTimeAt != null) {
             if (System.currentTimeMillis() > expireTimeAt) {
                 MAP.remove(id);
                 return null;
             }
-            return webUser;
         }
+        return webUser;
     }
 
     /**

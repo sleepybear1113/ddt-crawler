@@ -1,6 +1,8 @@
 package com.xjx.ddtcrawler.http;
 
 import com.xjx.ddtcrawler.http.enumeration.MethodEnum;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import org.apache.http.*;
 import org.apache.http.client.config.RequestConfig;
 import org.apache.http.client.methods.HttpRequestBase;
@@ -17,10 +19,14 @@ import java.util.Set;
  * @author XJX
  * @date 2021/1/30 16:51
  */
+@EqualsAndHashCode(callSuper = true)
+@Data
 public class HttpRequestMaker extends HttpRequestBase implements HttpEntityEnclosingRequest {
     public String methodName;
 
     private HttpEntity entity;
+
+    private HttpHost httpHost;
 
     public HttpRequestMaker(String url) {
         this(URI.create(url));
@@ -116,6 +122,7 @@ public class HttpRequestMaker extends HttpRequestBase implements HttpEntityEnclo
                 .setConnectionRequestTimeout(1000)
                 .setConnectTimeout(1000 * 5)
                 .setSocketTimeout(1000 * 5)
+                .setProxy(this.httpHost)
                 .build();
         this.setConfig(requestConfig);
         return this;

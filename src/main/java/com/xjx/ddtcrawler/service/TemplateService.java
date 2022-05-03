@@ -1,10 +1,11 @@
 package com.xjx.ddtcrawler.service;
 
+import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.xjx.ddtcrawler.domain.Template;
 import com.xjx.ddtcrawler.mapper.TemplateMapper;
+import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.*;
@@ -15,14 +16,14 @@ import java.util.*;
  */
 @Service
 public class TemplateService {
-    @Autowired
+    @Resource
     private TemplateMapper templateMapper;
 
     public Template getById(Long id) {
         if (id == null) {
             return null;
         }
-        return templateMapper.get(id);
+        return templateMapper.selectById(id);
     }
 
     public List<Template> getByIds(List<Long> ids) {
@@ -30,7 +31,7 @@ public class TemplateService {
             return new ArrayList<>();
         }
 
-        return templateMapper.getByIds(new ArrayList<>(new HashSet<>(ids)));
+        return templateMapper.selectBatchIds(new ArrayList<>(new HashSet<>(ids)));
     }
 
     public Map<Long, Template> getMapByIds(List<Long> ids) {
@@ -54,21 +55,21 @@ public class TemplateService {
         template.setModifyTime(System.currentTimeMillis());
 
         Long id = template.getId();
-        Template existTemplate = templateMapper.get(id);
+        Template existTemplate = templateMapper.selectById(id);
         if (existTemplate == null) {
             if (StringUtils.isBlank(template.getName())) {
                 return false;
             }
 
-            templateMapper.add(template);
+            templateMapper.insert(template);
         } else {
-            templateMapper.update(template);
+            templateMapper.updateById(template);
         }
 
         return true;
     }
 
     public List<Template> getAll() {
-        return templateMapper.getAll();
+        return templateMapper.selectList(new QueryWrapper<>());
     }
 }

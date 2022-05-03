@@ -34,3 +34,5 @@ build/
 ### VS Code ###
 .vscode/
 /out/
+
+src/main/resources/application-tencent.yml

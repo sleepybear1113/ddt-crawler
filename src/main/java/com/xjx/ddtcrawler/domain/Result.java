@@ -10,6 +10,7 @@ import lombok.Data;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,6 +22,7 @@ import java.util.stream.Collectors;
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
 public class Result implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2207327607885009086L;
 
     @XStreamAsAttribute
@@ -38,7 +40,6 @@ public class Result implements Serializable {
 
     static {
         xStream = new XStream(new DomDriver());
-        XStream.setupDefaultSecurity(xStream);
         xStream.allowTypes(new Class[]{Result.class, Item.class});
         xStream.processAnnotations(Result.class);
         xStream.alias("Result", Result.class);
@@ -89,26 +90,7 @@ public class Result implements Serializable {
             return;
         }
         for (Item item : items) {
-            item.setBuyerId(null);
-            String buyerName = item.getBuyerName();
-            if (StringUtils.isNotBlank(buyerName)) {
-                item.setBuyerName("有");
-            }
-            item.setAuctioneerId(null);
-            item.setBeginDate(null);
-            item.setAuctionDate(null);
-            item.setItemDate(null);
-            item.setBeginTimeString(null);
-            item.setPic(null);
-            item.setUserDefinePrice(null);
-            Long beginTime = item.getBeginTime();
-            item.setBeginTime(null);
             item.encryptTemplateId();
-
-            if (beginTime != null) {
-                long v = (System.currentTimeMillis() - beginTime) / 1000 / 3600;
-                item.setBeginTimeString(String.valueOf(v));
-            }
         }
     }
 

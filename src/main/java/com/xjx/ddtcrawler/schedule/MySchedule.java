@@ -3,8 +3,8 @@ package com.xjx.ddtcrawler.schedule;
 import com.xjx.ddtcrawler.cache.CacheInterface;
 import com.xjx.ddtcrawler.domain.Template;
 import com.xjx.ddtcrawler.service.TemplateService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.EnableScheduling;
@@ -22,12 +22,12 @@ import java.util.Random;
 public class MySchedule {
     private static final Random RANDOM = new Random();
 
-    @Autowired
+    @Resource
     private TemplateService templateService;
-    @Autowired
+    @Resource
     @Qualifier("commonCache")
     private CacheInterface commonCache;
-    @Autowired
+    @Resource
     @Qualifier("webUserCache")
     private CacheInterface webUserCache;
 

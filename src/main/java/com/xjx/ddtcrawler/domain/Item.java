@@ -1,5 +1,6 @@
 package com.xjx.ddtcrawler.domain;
 
+import com.baomidou.mybatisplus.annotation.TableName;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.thoughtworks.xstream.annotations.XStreamAlias;
 import com.thoughtworks.xstream.annotations.XStreamAsAttribute;
@@ -7,6 +8,7 @@ import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import com.xjx.ddtcrawler.utils.TimeUtil;
 import lombok.Data;
 
+import java.io.Serial;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
@@ -17,7 +19,9 @@ import java.util.Objects;
  */
 @Data
 @JsonInclude(JsonInclude.Include.NON_EMPTY)
+@TableName("item")
 public class Item implements Serializable {
+    @Serial
     private static final long serialVersionUID = 5112946113341660069L;
 
     private Long id;

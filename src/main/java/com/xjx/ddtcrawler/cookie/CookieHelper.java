@@ -1,13 +1,12 @@
 package com.xjx.ddtcrawler.cookie;
 
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.web.context.request.RequestAttributes;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author XieJiaxing
@@ -60,8 +59,6 @@ public class CookieHelper {
             s += encryptUserId;
         }
         s += "-";
-        if (StringUtils.isNotBlank(key)) {
-        }
         setWebUserCookie(s, COOKIE_MAX_AGE);
     }
 }

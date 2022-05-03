@@ -1,21 +1,16 @@
 package com.xjx.ddtcrawler.aspect;
 
 import com.xjx.ddtcrawler.cache.CommonCache;
-import com.xjx.ddtcrawler.cookie.CookieHelper;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.exception.MyException;
+import jakarta.annotation.Resource;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.reflect.MethodSignature;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.List;
 
 /**
  * @author XieJiaxing
@@ -26,9 +21,9 @@ import java.util.List;
 public class ConcurrentAspect {
     private static final String LAST_REQUEST_TIME_PREFIX = "LAST_REQUEST_TIME_";
 
-    @Autowired
+    @Resource
     private HttpServletRequest request;
-    @Autowired
+    @Resource
     private CommonCache commonCache;
 
     @Around("execution(* com.xjx.ddtcrawler.controller..*(..))")

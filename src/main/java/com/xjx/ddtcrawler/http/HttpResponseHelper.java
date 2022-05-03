@@ -1,9 +1,13 @@
 package com.xjx.ddtcrawler.http;
 
+import com.xjx.ddtcrawler.http.enumeration.HttpStatusCode;
+import lombok.AllArgsConstructor;
+import lombok.NoArgsConstructor;
 import org.apache.http.Header;
 import org.apache.http.StatusLine;
 import org.apache.http.client.CookieStore;
 import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.protocol.HttpClientContext;
 import org.apache.http.util.EntityUtils;
 
 import java.io.IOException;
@@ -16,12 +20,15 @@ import java.util.Arrays;
  * @author XJX
  * @date 2021/4/18 12:11
  */
+@AllArgsConstructor
+@NoArgsConstructor
 public class HttpResponseHelper {
     private CookieStore httpCookieStore;
     private Header[] headers;
     private StatusLine statusLine;
     private String responseBody;
     private String exceptionMessage;
+    private HttpClientContext context;
 
     public HttpResponseHelper(CookieStore httpCookieStore, Header[] headers, StatusLine statusLine, String responseBody) {
         this.httpCookieStore = httpCookieStore;
@@ -30,8 +37,9 @@ public class HttpResponseHelper {
         this.responseBody = responseBody;
     }
 
-    public HttpResponseHelper(CookieStore httpCookieStore, CloseableHttpResponse closeableHttpResponse, IOException ioException) {
+    public HttpResponseHelper(CookieStore httpCookieStore, CloseableHttpResponse closeableHttpResponse, IOException ioException, HttpClientContext context) {
         this.httpCookieStore = httpCookieStore;
+        this.context = context;
         if (ioException != null) {
             exceptionMessage = ioException.getMessage();
         }
@@ -85,6 +93,30 @@ public class HttpResponseHelper {
 
     public void setExceptionMessage(String exceptionMessage) {
         this.exceptionMessage = exceptionMessage;
+    }
+
+    public HttpClientContext getContext() {
+        return context;
+    }
+
+    public boolean isResponse2xx3xx() {
+        return isResponse2xx() || isResponse3xx();
+    }
+
+    public boolean isResponse2xx() {
+        if (this.statusLine == null) {
+            return false;
+        }
+        int statusCode = this.statusLine.getStatusCode();
+        return HttpStatusCode.OK.getCode() <= statusCode && HttpStatusCode.MULTIPLE_CHOICES.getCode() > statusCode;
+    }
+
+    public boolean isResponse3xx() {
+        if (this.statusLine == null) {
+            return false;
+        }
+        int statusCode = this.statusLine.getStatusCode();
+        return HttpStatusCode.MULTIPLE_CHOICES.getCode() <= statusCode && HttpStatusCode.BAD_REQUEST.getCode() > statusCode;
     }
 
     @Override

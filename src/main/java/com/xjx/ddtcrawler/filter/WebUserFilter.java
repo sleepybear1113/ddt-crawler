@@ -3,14 +3,13 @@ package com.xjx.ddtcrawler.filter;
 import com.xjx.ddtcrawler.cache.WebUserCache;
 import com.xjx.ddtcrawler.cookie.CookieHelper;
 import com.xjx.ddtcrawler.cookie.WebUser;
+import jakarta.servlet.*;
+import jakarta.servlet.annotation.WebFilter;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.context.support.WebApplicationContextUtils;
-
-import javax.servlet.*;
-import javax.servlet.annotation.WebFilter;
-import javax.servlet.http.Cookie;
-import javax.servlet.http.HttpServletRequest;
 
 /**
  * @author XieJiaxing
@@ -70,8 +69,4 @@ public class WebUserFilter implements Filter {
         }
     }
 
-    @Override
-    public void destroy() {
-        Filter.super.destroy();
-    }
 }

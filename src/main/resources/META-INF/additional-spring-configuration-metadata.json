@@ -1,0 +1,13 @@
+{
+  "properties": [
+    {
+      "name": "user-id.admin",
+      "type": "java.lang.String",
+      "description": "Description for user-id.admin."
+    },
+    {
+      "name": "user-id.common",
+      "type": "java.lang.String",
+      "description": "Description for user-id.common."
+    }
+  ] }

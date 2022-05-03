@@ -11,9 +11,9 @@ import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.logic.AuctionLogic;
 import com.xjx.ddtcrawler.service.ItemService;
 import com.xjx.ddtcrawler.utils.ThreadPoolUtil;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.Collections;
@@ -30,13 +30,13 @@ public class ItemTask {
     public static final String ITEM_TASK_KEY = "item_task_key";
     public static final String ITEM_TASK_LAST_AUCTION_TIME = "item_task_last_auction_time";
 
-    @Autowired
+    @Resource
     private AuctionLogic auctionLogic;
-    @Autowired
+    @Resource
     private ItemService itemService;
-    @Autowired
+    @Resource
     private CommonCache commonCache;
-    @Autowired
+    @Resource
     private WebUserCache webUserCache;
 
     public void initAuctionId() {

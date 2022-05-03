@@ -10,10 +10,10 @@ import com.xjx.ddtcrawler.http.HttpHelper;
 import com.xjx.ddtcrawler.http.HttpResponseHelper;
 import com.xjx.ddtcrawler.service.ItemService;
 import com.xjx.ddtcrawler.service.TemplateService;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.collections4.MapUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.*;
@@ -27,9 +27,9 @@ import java.util.concurrent.TimeUnit;
 @Slf4j
 public class AuctionLogic {
 
-    @Autowired
+    @Resource
     private TemplateService templateService;
-    @Autowired
+    @Resource
     private ItemService itemService;
 
     /**

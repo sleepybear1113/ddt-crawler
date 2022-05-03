@@ -14,13 +14,13 @@ spring:
   jpa:
     show-sql: true
 
-
-mybatis:
-  mapper-locations: classpath:mapping/*Mapper.xml
-
 #showSql
 logging:
   level:
     com:
       xjx:
         mapper : debug
+
+user-id:
+  admin: 10000,20000
+  common: 11111,22222

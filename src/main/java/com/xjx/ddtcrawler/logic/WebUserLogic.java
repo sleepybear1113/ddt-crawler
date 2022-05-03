@@ -2,12 +2,13 @@ package com.xjx.ddtcrawler.logic;
 
 import com.xjx.ddtcrawler.cache.WebUserCache;
 import com.xjx.ddtcrawler.cookie.CookieHelper;
+import com.xjx.ddtcrawler.cookie.UserPrivilege;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.exception.MyException;
+import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,15 +18,17 @@ import org.springframework.stereotype.Component;
 @Component
 @Slf4j
 public class WebUserLogic {
-    @Autowired
+    @Resource
     private WebUserCache webUserCache;
+    @Resource
+    private UserPrivilege userPrivilege;
 
     public void save(Long userId, String key, Long expireTime) throws MyException {
         if (userId == null) {
             log.info("userId 为空");
             return;
         }
-        if (!(WebUser.isInSpecificUserId(userId) || WebUser.isInAdminUserId(userId))) {
+        if (!(userPrivilege.isInSpecificUserId(userId) || userPrivilege.isInAdminUserId(userId))) {
             throw new MyException("暂不支持其他id登录");
         }
         if (StringUtils.isBlank(key)) {

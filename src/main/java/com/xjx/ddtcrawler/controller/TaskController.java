@@ -3,8 +3,7 @@ package com.xjx.ddtcrawler.controller;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.task.ItemTask;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
+import jakarta.annotation.Resource;
 import org.springframework.web.bind.annotation.RestController;
 
 /**
@@ -13,10 +12,9 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class TaskController {
-    @Autowired
+    @Resource
     private ItemTask itemTask;
 
-    @RequestMapping("/task/startAuction")
     public String startAuction() throws MyException {
         WebUser safeWebUser = WebUser.getSafeWebUser();
         return itemTask.startTask(safeWebUser);

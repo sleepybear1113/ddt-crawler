@@ -1,13 +1,14 @@
 package com.xjx.ddtcrawler.controller;
 
+import com.xjx.ddtcrawler.cookie.UserPrivilege;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.logic.AuctionLogic;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,8 +19,10 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class AuctionController {
-    @Autowired
+    @Resource
     private AuctionLogic auctionLogic;
+    @Resource
+    private UserPrivilege userPrivilege;
 
     @RequestMapping("/auction/getAuctionItems")
     public Result getItems(@RequestParam(required = false, defaultValue = "1") Integer page,
@@ -46,13 +49,13 @@ public class AuctionController {
         queryUrl.setSort(sort);
         queryUrl.setPage(page);
         queryUrl.setName(itemName.trim());
-        if (temporaryUser) {
+        if (userPrivilege.notAdmin(webUser)) {
             queryUrl.setUserId(-1L);
             queryUrl.setBuyId(-1L);
         }
 
         Result result = auctionLogic.getSingleResult(queryUrl);
-        if (temporaryUser) {
+        if (userPrivilege.notAdmin(webUser)) {
             result.hideSensitiveInfo();
         }
         return result;
@@ -75,7 +78,7 @@ public class AuctionController {
         queryUrl.setName(itemName.trim());
 
         Result result = auctionLogic.getResultsByBatchPages(queryUrl, QueryUrl.DEFAULT_PAGES, true, 250L, priceType, sort, null);
-        if (webUser.isTemporaryUser()) {
+        if (userPrivilege.notAdmin(webUser)) {
             result.hideSensitiveInfo();
         }
         return result;

@@ -2,13 +2,15 @@ package com.xjx.ddtcrawler.exception;
 
 import com.xjx.ddtcrawler.vo.ResultCodeConstant;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
  * @author XieJiaxing
  * @date 2021/8/1 22:52
  */
-public class MyException extends Exception implements Serializable {
+public class MyException extends RuntimeException implements Serializable {
+    @Serial
     private static final long serialVersionUID = 2625531273324815042L;
     private Integer code;
 

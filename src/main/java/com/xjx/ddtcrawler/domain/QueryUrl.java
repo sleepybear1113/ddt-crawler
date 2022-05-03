@@ -7,8 +7,8 @@ import lombok.Data;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 
-import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
@@ -114,11 +114,6 @@ public class QueryUrl {
             return s;
         }
 
-        try {
-            return URLEncoder.encode(s, "utf-8");
-        } catch (UnsupportedEncodingException e) {
-            log.error("url 编码错误", e);
-            return "";
-        }
+        return URLEncoder.encode(s, StandardCharsets.UTF_8);
     }
 }

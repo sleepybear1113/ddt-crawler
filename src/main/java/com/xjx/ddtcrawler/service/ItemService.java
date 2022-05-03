@@ -3,8 +3,8 @@ package com.xjx.ddtcrawler.service;
 import com.xjx.ddtcrawler.domain.Item;
 import com.xjx.ddtcrawler.domain.Result;
 import com.xjx.ddtcrawler.mapper.ItemMapper;
+import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -15,7 +15,7 @@ import java.util.List;
  */
 @Service
 public class ItemService {
-    @Autowired
+    @Resource
     private ItemMapper itemMapper;
 
     public int deleteById(Long id) {
@@ -23,7 +23,13 @@ public class ItemService {
     }
 
     public int insert(List<Item> list) {
-        return itemMapper.insertBatch(list);
+        if (CollectionUtils.isEmpty(list)) {
+            return 0;
+        }
+        for (Item item : list) {
+            itemMapper.insert(item);
+        }
+        return list.size();
     }
 
     public int insert(Result result) {
@@ -31,35 +37,10 @@ public class ItemService {
             return 0;
         }
 
-        List<Item> items = result.getItems();
-        if (CollectionUtils.isEmpty(items)) {
-            return 0;
-        }
-
-        return insert(items);
-    }
-
-    public int insert(Item record) {
-        return itemMapper.insert(record);
-    }
-
-    public int insertSelective(Item record) {
-        return itemMapper.insertSelective(record);
-    }
-
-    public Item getById(Long id) {
-        return itemMapper.getById(id);
-    }
-
-    public int updateByIdSelective(Item record) {
-        return itemMapper.updateByIdSelective(record);
-    }
-
-    public int updateById(Item record) {
-        return itemMapper.updateById(record);
+        return insert(result.getItems());
     }
 
     public long getMaxAuctionId() {
-        return itemMapper.getMaxAuctionId();
+        return 0;
     }
 }

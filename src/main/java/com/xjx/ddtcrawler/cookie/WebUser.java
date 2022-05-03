@@ -8,6 +8,7 @@ import lombok.EqualsAndHashCode;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.BeanUtils;
 
+import java.io.Serial;
 import java.io.Serializable;
 
 /**
@@ -17,6 +18,7 @@ import java.io.Serializable;
 @EqualsAndHashCode(callSuper = true)
 @Data
 public class WebUser extends CacheDomain implements Serializable {
+    @Serial
     private static final long serialVersionUID = 5392034256168678992L;
 
     public static final ThreadLocal<WebUser> WEB_USER_THREAD_LOCAL = new ThreadLocal<>();
@@ -68,31 +70,5 @@ public class WebUser extends CacheDomain implements Serializable {
 
         this.id = EncryptedUtils.encryptId(this.getUserId(), this.loginTime);
         return this.id;
-    }
-
-    public boolean isAdmin() {
-        return isInAdminUserId(this.userId) && !isTemporaryUser();
-    }
-
-    public boolean isSpecificUser() {
-        return isAdmin() || (isInSpecificUserId(this.userId) && !isTemporaryUser());
-    }
-
-    public static boolean isInAdminUserId(Long userId) {
-        if (userId == null) {
-            return false;
-        }
-        long s001 = 45801399L;
-        long h2 = 45809800L;
-        return s001 == userId || h2 == userId;
-    }
-
-    public static boolean isInSpecificUserId(Long userId) {
-        if (userId == null) {
-            return false;
-        }
-        long out1 = 45775397L;
-        long out2 = 45814178L;
-        return out1 == userId || out2 == userId;
     }
 }

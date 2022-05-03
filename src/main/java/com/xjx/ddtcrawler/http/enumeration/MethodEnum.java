@@ -51,22 +51,10 @@ public enum MethodEnum {
     }
 
     public static MethodEnum getByMethodName(String methodName) {
-        if (METHOD_GET.getMethod().equals(methodName)) {
-            return METHOD_GET;
-        } else if (METHOD_POST.getMethod().equals(methodName)) {
-            return METHOD_POST;
-        } else if (METHOD_PUT.getMethod().equals(methodName)) {
-            return METHOD_PUT;
-        } else if (METHOD_DELETE.getMethod().equals(methodName)) {
-            return METHOD_DELETE;
-        } else if (METHOD_HEAD.getMethod().equals(methodName)) {
-            return METHOD_HEAD;
-        } else if (METHOD_PATCH.getMethod().equals(methodName)) {
-            return METHOD_PATCH;
-        } else if (METHOD_OPTIONS.getMethod().equals(methodName)) {
-            return METHOD_OPTIONS;
-        } else if (METHOD_TRACE.getMethod().equals(methodName)) {
-            return METHOD_TRACE;
+        for (MethodEnum methodEnum : MethodEnum.values()) {
+            if (methodEnum.getMethod().equals(methodName)) {
+                return methodEnum;
+            }
         }
         return null;
     }

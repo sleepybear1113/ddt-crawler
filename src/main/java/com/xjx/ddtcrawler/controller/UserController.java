@@ -6,8 +6,8 @@ import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.logic.WebUserLogic;
 import com.xjx.ddtcrawler.utils.TimeUtil;
 import com.xjx.ddtcrawler.vo.MyMessage;
+import jakarta.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.RestController;
  */
 @RestController
 public class UserController {
-    @Autowired
+    @Resource
     private WebUserLogic webUserLogic;
 
     @RequestMapping("/user/saveUser")
@@ -77,7 +77,7 @@ public class UserController {
     }
 
     @RequestMapping("/user/deleteCookie")
-    public void deleteCookie() throws MyException {
+    public void deleteCookie() {
         CookieHelper.setWebUserCookie("", 0);
     }
 }

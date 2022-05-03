@@ -3,9 +3,9 @@ package com.xjx.ddtcrawler.logic;
 import com.xjx.ddtcrawler.domain.Template;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.service.TemplateService;
+import jakarta.annotation.Resource;
 import org.apache.commons.collections4.CollectionUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
@@ -29,7 +29,7 @@ public class TemplateLogic {
         COMMON_SLV_4.addAll(Arrays.asList(commonDefenceSlv4));
     }
 
-    @Autowired
+    @Resource
     private TemplateService templateService;
 
     public Template getTemplateById(Long id) {
