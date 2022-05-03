@@ -13,5 +13,4 @@ import java.util.List;
 @Repository
 public interface TemplateMapper extends BaseMapper<Template> {
 
-    List<Template> getAll();
 }
