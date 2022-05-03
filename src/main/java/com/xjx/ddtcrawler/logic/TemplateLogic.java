@@ -1,6 +1,6 @@
 package com.xjx.ddtcrawler.logic;
 
-import com.xjx.ddtcrawler.domain.Template;
+import com.xjx.ddtcrawler.dto.TemplateDto;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.service.TemplateService;
 import jakarta.annotation.Resource;
@@ -32,7 +32,7 @@ public class TemplateLogic {
     @Resource
     private TemplateService templateService;
 
-    public Template getTemplateById(Long id) {
+    public TemplateDto getTemplateById(Long id) {
         return templateService.getById(id);
     }
 
@@ -40,25 +40,25 @@ public class TemplateLogic {
         if (templateId == null || StringUtils.isBlank(templateName)) {
             throw new MyException("template 参数有误");
         }
-        Template template = new Template();
-        template.setId(templateId);
-        template.setName(templateName);
-        return templateService.save(template);
+        TemplateDto templateDto = new TemplateDto();
+        templateDto.setId(templateId);
+        templateDto.setName(templateName);
+        return templateService.save(templateDto);
     }
 
-    public List<Template> listAllTemplates() {
-        List<Template> templates = templateService.getAll();
-        templates.forEach(Template::encryptId);
+    public List<TemplateDto> listAllTemplates() {
+        List<TemplateDto> templates = templateService.getAll();
+        templates.forEach(TemplateDto::encryptId);
         return templates;
     }
 
-    public List<Template> listCommonSlv4() {
-        List<Template> templates = templateService.getByIds(COMMON_SLV_4);
+    public List<TemplateDto> listCommonSlv4() {
+        List<TemplateDto> templates = templateService.getByIds(COMMON_SLV_4);
         if (CollectionUtils.isEmpty(templates)) {
             return new ArrayList<>();
         }
 
-        templates.forEach(Template::encryptId);
+        templates.forEach(TemplateDto::encryptId);
         return templates;
     }
 }

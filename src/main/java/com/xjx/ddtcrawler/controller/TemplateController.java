@@ -1,8 +1,7 @@
 package com.xjx.ddtcrawler.controller;
 
-import com.xjx.ddtcrawler.cookie.UserPrivilege;
 import com.xjx.ddtcrawler.cookie.WebUser;
-import com.xjx.ddtcrawler.domain.Template;
+import com.xjx.ddtcrawler.dto.TemplateDto;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.logic.TemplateLogic;
 import jakarta.annotation.Resource;
@@ -19,13 +18,11 @@ import java.util.List;
 public class TemplateController {
     @Resource
     private TemplateLogic templateLogic;
-    @Resource
-    private UserPrivilege userPrivilege;
 
     @RequestMapping("/template/getTemplateById")
-    public Template getTemplateById(Long id) throws MyException {
+    public TemplateDto getTemplateById(Long id) throws MyException {
         WebUser webUser = WebUser.getSafeWebUser();
-        if (userPrivilege.notAdmin(webUser)) {
+        if (webUser.notAdmin()) {
             throw new MyException("无权操作该接口");
         }
         return templateLogic.getTemplateById(id);
@@ -34,19 +31,19 @@ public class TemplateController {
     @RequestMapping("/template/saveTemplate")
     public Boolean saveTemplate(Long templateId, String templateName) throws MyException {
         WebUser webUser = WebUser.getSafeWebUser();
-        if (userPrivilege.notAdmin(webUser)) {
+        if (webUser.notAdmin()) {
             throw new MyException("无权操作该接口");
         }
         return templateLogic.saveTemplate(templateId, templateName);
     }
 
     @RequestMapping("/template/listAllTemplates")
-    public List<Template> listAllTemplates() {
+    public List<TemplateDto> listAllTemplates() {
         return templateLogic.listAllTemplates();
     }
 
     @RequestMapping("/template/listCommonSlv4")
-    public List<Template> listCommonSlv4() {
+    public List<TemplateDto> listCommonSlv4() {
         return templateLogic.listCommonSlv4();
     }
 }

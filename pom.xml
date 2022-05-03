@@ -10,7 +10,7 @@
     </parent>
     <groupId>com.xjx</groupId>
     <artifactId>ddt-crawler</artifactId>
-    <version>0.1.1</version>
+    <version>0.2.0</version>
     <name>ddt-crawler</name>
     <description>ddt-crawler</description>
     <properties>
@@ -47,11 +47,6 @@
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-lang3</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-configuration-processor</artifactId>
-            <optional>true</optional>
-        </dependency>
 
         <dependency>
             <groupId>com.baomidou</groupId>
@@ -73,12 +68,6 @@
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.19</version>
-        </dependency>
-        <!-- https://mvnrepository.com/artifact/com.google.guava/guava -->
-        <dependency>
-            <groupId>com.google.guava</groupId>
-            <artifactId>guava</artifactId>
-            <version>31.1-jre</version>
         </dependency>
 
     </dependencies>

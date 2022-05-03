@@ -1,6 +1,5 @@
 package com.xjx.ddtcrawler.controller;
 
-import com.xjx.ddtcrawler.cookie.UserPrivilege;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
@@ -21,8 +20,6 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuctionController {
     @Resource
     private AuctionLogic auctionLogic;
-    @Resource
-    private UserPrivilege userPrivilege;
 
     @RequestMapping("/auction/getAuctionItems")
     public Result getItems(@RequestParam(required = false, defaultValue = "1") Integer page,
@@ -49,13 +46,13 @@ public class AuctionController {
         queryUrl.setSort(sort);
         queryUrl.setPage(page);
         queryUrl.setName(itemName.trim());
-        if (userPrivilege.notAdmin(webUser)) {
+        if (webUser.notAdmin()) {
             queryUrl.setUserId(-1L);
             queryUrl.setBuyId(-1L);
         }
 
         Result result = auctionLogic.getSingleResult(queryUrl);
-        if (userPrivilege.notAdmin(webUser)) {
+        if (webUser.notAdmin()) {
             result.hideSensitiveInfo();
         }
         return result;
@@ -78,7 +75,7 @@ public class AuctionController {
         queryUrl.setName(itemName.trim());
 
         Result result = auctionLogic.getResultsByBatchPages(queryUrl, QueryUrl.DEFAULT_PAGES, true, 250L, priceType, sort, null);
-        if (userPrivilege.notAdmin(webUser)) {
+        if (webUser.notAdmin()) {
             result.hideSensitiveInfo();
         }
         return result;

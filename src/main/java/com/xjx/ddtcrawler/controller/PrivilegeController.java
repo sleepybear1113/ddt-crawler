@@ -1,8 +1,7 @@
 package com.xjx.ddtcrawler.controller;
 
-import com.xjx.ddtcrawler.cookie.UserPrivilege;
+import com.xjx.ddtcrawler.config.ConfigBean;
 import com.xjx.ddtcrawler.exception.MyException;
-import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,31 +15,26 @@ import java.util.List;
 @RestController
 public class PrivilegeController {
 
-    @Resource
-    private UserPrivilege userPrivilege;
-
     @RequestMapping("/privilege/addCommonUserId")
     public List<Long> addCommonUserId(Long id) {
         if (id == null) {
             throw new MyException("错误");
         }
 
-        for (Long commonUserId : userPrivilege.getCommonUserIds()) {
+        for (Long commonUserId : ConfigBean.getCommonUserIds()) {
             if (commonUserId.equals(id)) {
                 throw new MyException("重复");
             }
         }
-        userPrivilege.getCommonUserIds().add(id);
-        return userPrivilege.getCommonUserIds();
+        ConfigBean.getCommonUserIds().add(id);
+        return ConfigBean.getCommonUserIds();
     }
 
     @RequestMapping("/privilege/deleteCommonUserId")
-    public Object deleteCommonUserId(Long id) {
-        if (id == null) {
-            throw new MyException("错误");
+    public List<Long> deleteCommonUserId(Long id) {
+        if (id != null) {
+            ConfigBean.getCommonUserIds().removeIf(u -> u.equals(id));
         }
-
-        userPrivilege.getCommonUserIds().removeIf(u -> u.equals(id));
-        return userPrivilege.getCommonUserIds();
+        return ConfigBean.getCommonUserIds();
     }
 }

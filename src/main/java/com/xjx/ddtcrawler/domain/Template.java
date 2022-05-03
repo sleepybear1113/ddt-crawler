@@ -2,7 +2,6 @@ package com.xjx.ddtcrawler.domain;
 
 import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableName;
-import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 
@@ -23,22 +22,4 @@ public class Template extends BaseDomain {
     private String name;
     @TableField("price")
     private Double price;
-    @TableField(exist = false)
-    private Boolean isEncrypted = false;
-
-    public void encryptId() {
-        if (this.isEncrypted) {
-            return;
-        }
-        this.setId(EncryptedUtils.encryptTemplateId(this.getId()));
-        this.isEncrypted = true;
-    }
-
-    public void decryptId() {
-        if (!this.isEncrypted) {
-            return;
-        }
-        this.setId(EncryptedUtils.decryptTemplateId(this.getId()));
-        this.isEncrypted = false;
-    }
 }

@@ -3,8 +3,8 @@ package com.xjx.ddtcrawler.logic;
 import com.xjx.ddtcrawler.domain.Item;
 import com.xjx.ddtcrawler.domain.QueryUrl;
 import com.xjx.ddtcrawler.domain.Result;
-import com.xjx.ddtcrawler.domain.Template;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
+import com.xjx.ddtcrawler.dto.TemplateDto;
 import com.xjx.ddtcrawler.exception.MyException;
 import com.xjx.ddtcrawler.http.HttpHelper;
 import com.xjx.ddtcrawler.http.HttpResponseHelper;
@@ -245,7 +245,7 @@ public class AuctionLogic {
         }
 
         List<Long> templateIds = new ArrayList<>(templateSet);
-        Map<Long, Template> templateMap = templateService.getMapByIds(templateIds);
+        Map<Long, TemplateDto> templateMap = templateService.getMapByIds(templateIds);
         log.info("找到对应 template 数量：" + templateMap.size());
         if (MapUtils.isEmpty(templateMap)) {
             return;
@@ -253,12 +253,12 @@ public class AuctionLogic {
 
         for (Item item : items) {
             Long templateId = item.getTemplateId();
-            Template template = templateMap.get(templateId);
-            if (template == null) {
+            TemplateDto templateDto = templateMap.get(templateId);
+            if (templateDto == null) {
                 continue;
             }
-            String templateName = template.getName();
-            Double price = template.getPrice();
+            String templateName = templateDto.getName();
+            Double price = templateDto.getPrice();
             item.setTemplateName(templateName);
             item.setUserDefinePrice(price);
         }
@@ -295,7 +295,7 @@ public class AuctionLogic {
             return result;
         }
 
-        Map<Long, Template> templateMap = templateService.getMapByIds(templateIds);
+        Map<Long, TemplateDto> templateMap = templateService.getMapByIds(templateIds);
         log.info("找到对应 template 数量：" + templateMap.size());
         if (MapUtils.isEmpty(templateMap)) {
             return result;
@@ -303,12 +303,12 @@ public class AuctionLogic {
 
         for (Item item : items) {
             Long templateId = item.getTemplateId();
-            Template template = templateMap.get(templateId);
-            if (template == null) {
+            TemplateDto templateDto = templateMap.get(templateId);
+            if (templateDto == null) {
                 continue;
             }
-            String templateName = template.getName();
-            Double price = template.getPrice();
+            String templateName = templateDto.getName();
+            Double price = templateDto.getPrice();
             item.setTemplateName(templateName);
             item.setUserDefinePrice(price);
         }

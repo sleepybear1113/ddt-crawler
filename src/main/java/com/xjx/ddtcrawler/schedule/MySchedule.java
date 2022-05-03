@@ -1,7 +1,7 @@
 package com.xjx.ddtcrawler.schedule;
 
 import com.xjx.ddtcrawler.cache.CacheInterface;
-import com.xjx.ddtcrawler.domain.Template;
+import com.xjx.ddtcrawler.dto.TemplateDto;
 import com.xjx.ddtcrawler.service.TemplateService;
 import jakarta.annotation.Resource;
 import lombok.extern.slf4j.Slf4j;
@@ -34,7 +34,7 @@ public class MySchedule {
     @Scheduled(cron = "0 */1 * * * ?")
     public void mySqlConnection() {
         try {
-            Template template = templateService.getById(RANDOM.nextLong() / 1000);
+            TemplateDto templateDto = templateService.getById(RANDOM.nextLong() / 1000);
             log.info("test connection");
         } catch (Exception e) {
             log.error("test connection error", e);

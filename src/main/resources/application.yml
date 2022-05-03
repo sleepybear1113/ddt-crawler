@@ -19,7 +19,7 @@ logging:
   level:
     com:
       xjx:
-        mapper : debug
+        mapper: debug
 
 # 自定义配置
 mysql:
@@ -27,3 +27,5 @@ mysql:
 user-id:
   admin: 10000,20000
   common: 11111,22222
+game-url:
+  prefix: https://s57_app1105673153_qqgame_com.7road.net

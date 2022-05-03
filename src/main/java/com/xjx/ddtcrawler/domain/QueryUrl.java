@@ -1,5 +1,6 @@
 package com.xjx.ddtcrawler.domain;
 
+import com.xjx.ddtcrawler.config.ConfigBean;
 import com.xjx.ddtcrawler.cookie.WebUser;
 import com.xjx.ddtcrawler.domain.constant.AuctionConstant;
 import com.xjx.ddtcrawler.exception.MyException;
@@ -20,9 +21,10 @@ import java.util.Random;
 @Data
 @Slf4j
 public class QueryUrl {
-    public static final String URL = "https://s57_app1105673153_qqgame_com.7road.net/request/auctionpagelist.ashx";
+    public static final String URL = ConfigBean.getGameUrlPrefix() + "/request/auctionpagelist.ashx";
     public static final Random RANDOM = new Random();
     public static final List<Integer> DEFAULT_PAGES = new ArrayList<>();
+
     static {
         DEFAULT_PAGES.add(1);
         DEFAULT_PAGES.add(2);
