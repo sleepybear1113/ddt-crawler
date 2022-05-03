@@ -4,6 +4,9 @@ import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+/**
+ * @author xjx
+ */
 @MapperScan(basePackages = {"com.xjx.ddtcrawler.mapper"})
 @SpringBootApplication
 public class DdtCrawlerApplication {

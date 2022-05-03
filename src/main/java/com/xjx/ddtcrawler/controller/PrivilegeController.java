@@ -9,6 +9,9 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
+/**
+ * @author xjx
+ */
 @Slf4j
 @RestController
 public class PrivilegeController {
