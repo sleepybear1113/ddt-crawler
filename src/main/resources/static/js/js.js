@@ -12,9 +12,6 @@ function saveUser() {
         // 接口数据
         let data = res.data;
         console.log(data);
-        if (!processErrorResult(data)) {
-            return;
-        }
 
         let success = data.result;
         if (success) {
@@ -36,10 +33,6 @@ function createTemporaryLicense() {
     }).then(res => {
         // 接口数据
         let data = res.data;
-        let success = processErrorResult(data);
-        if (!success) {
-            return;
-        }
         console.log(data);
         alert(data.result.message);
     });
@@ -54,10 +47,6 @@ function deleteTemporaryLicense() {
     }).then(res => {
         // 接口数据
         let data = res.data;
-        let success = processErrorResult(data);
-        if (!success) {
-            return;
-        }
         console.log(data);
     });
 }
@@ -175,10 +164,6 @@ function getAuctionItems() {
     }).then(res => {
         // 接口数据
         let data = res.data;
-        let success = processErrorResult(data);
-        if (!success) {
-            return;
-        }
 
         console.log(data);
         data = data.result;
@@ -223,10 +208,6 @@ function getAuctionPriceOder(priceType, sort) {
     }).then(res => {
         // 接口数据
         let data = res.data;
-        let success = processErrorResult(data);
-        if (!success) {
-            return;
-        }
 
         data = data.result;
         console.log(data);

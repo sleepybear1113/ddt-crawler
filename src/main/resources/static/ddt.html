@@ -3,59 +3,14 @@
 <head>
     <meta charset="UTF-8">
     <title>ddt</title>
+    <link href="css/css.css" rel="stylesheet">
 </head>
-<style>
-    td, th {
-        text-align: center;
-        border: 1px solid;
-    }
 
-    .table-item-name {
-        width: 200px;
-    }
+<script src="lib/js/axios.min.js"></script>
+<script src="js/conf/axios-conf.js"></script>
+<script src="js/js.js"></script>
 
-    .table-seller {
-        width: 200px;
-    }
-
-    .table-time {
-        width: 200px;
-    }
-
-    .bid-unit-black {
-        color: black;
-    }
-
-    .mouth-unit-black {
-        color: black;
-    }
-
-    .bid-unit-red {
-        color: red;
-    }
-
-    .mouth-unit-red {
-        color: red;
-    }
-
-    .has-buyer {
-        color: cadetblue;
-    }
-
-    .expected-price {
-        color: darkgray;
-    }
-
-    .has-border {
-        border: darkgray solid 1px;
-        display: inline-block;
-    }
-</style>
 <body>
-
-<script src="axios.min.js"></script>
-<script src="js.js"></script>
-
 <div style="border: black 1px solid; padding: 3px">
     <div>
         <label for="selfId">selfId </label><input id="selfId" value="">

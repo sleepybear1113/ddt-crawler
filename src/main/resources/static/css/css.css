@@ -1,0 +1,45 @@
+td, th {
+    text-align: center;
+    border: 1px solid;
+}
+
+.table-item-name {
+    width: 200px;
+}
+
+.table-seller {
+    width: 200px;
+}
+
+.table-time {
+    width: 200px;
+}
+
+.bid-unit-black {
+    color: black;
+}
+
+.mouth-unit-black {
+    color: black;
+}
+
+.bid-unit-red {
+    color: red;
+}
+
+.mouth-unit-red {
+    color: red;
+}
+
+.has-buyer {
+    color: cadetblue;
+}
+
+.expected-price {
+    color: darkgray;
+}
+
+.has-border {
+    border: darkgray solid 1px;
+    display: inline-block;
+}

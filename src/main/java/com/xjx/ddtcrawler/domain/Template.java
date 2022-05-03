@@ -1,33 +1,28 @@
 package com.xjx.ddtcrawler.domain;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableField;
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import com.xjx.ddtcrawler.utils.EncryptedUtils;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 import java.io.Serial;
-import java.io.Serializable;
 
 /**
  * @author XJX
  * @date 2021/8/1 20:56
  */
 @Data
+@EqualsAndHashCode(callSuper = true)
 @TableName("template")
-public class Template implements Serializable {
+public class Template extends BaseDomain {
     @Serial
     private static final long serialVersionUID = 6076962907927806205L;
 
-    @TableId(value = "id", type = IdType.AUTO)
-    private Long id;
     @TableField("name")
     private String name;
     @TableField("price")
     private Double price;
-    @TableField("modify_time")
-    private Long modifyTime;
     @TableField(exist = false)
     private Boolean isEncrypted = false;
 
@@ -35,7 +30,7 @@ public class Template implements Serializable {
         if (this.isEncrypted) {
             return;
         }
-        this.id = EncryptedUtils.encryptTemplateId(this.id);
+        this.setId(EncryptedUtils.encryptTemplateId(this.getId()));
         this.isEncrypted = true;
     }
 
@@ -43,7 +38,7 @@ public class Template implements Serializable {
         if (!this.isEncrypted) {
             return;
         }
-        this.id = EncryptedUtils.decryptTemplateId(this.id);
+        this.setId(EncryptedUtils.decryptTemplateId(this.getId()));
         this.isEncrypted = false;
     }
 }

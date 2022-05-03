@@ -35,4 +35,5 @@ build/
 .vscode/
 /out/
 
-src/main/resources/application-tencent.yml
+### 自定义 ###
+application-tencent.yml
