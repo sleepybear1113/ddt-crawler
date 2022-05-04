@@ -7,6 +7,8 @@
 前端：简单的 HTML+JavaScript+CSS，没有使用其他框架；HTTP 请求使用 axios。
 ## 简单的静态页面
 这个静态页面仅做展示用，没有后端的相关支撑，故无法返回相关请求。静态页面：[ddt.html](https://sleepybear1113.github.io/ddt-crawler/src/main/resources/static/ddt.html)
+
+![首页图片](imgs/首页.png)
 # 部署方式
 ## 本地 Jar 包部署：
 1. 下载 Jar 包，[releases](https://github.com/sleepybear1113/ddt-crawler/releases)。
@@ -35,4 +37,6 @@ create index template_name_index on template (name);
 # 使用方法
 首先需要获取拍卖场的 HTTP 请求，可以在浏览器的控制台或者抓包获取。获取到 selfid 和 key 之后，填入页面对应位置，点击保存即可，而后就能进行物品的搜索。
 
-其中 selfid 为用户 id，不会变，key 为每次登录随机生成，下线即失效，所以需要账号一直在线才能使用。
+其中 selfid 为用户 id，不会变，key 为每次登录随机生成，下线即失效，所以需要账号一直在线才能使用。搜索结果如下：
+
+![搜索物品](imgs/搜索物品.png)
