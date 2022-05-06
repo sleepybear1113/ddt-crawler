@@ -40,3 +40,8 @@ create index template_name_index on template (name);
 其中 selfid 为用户 id，不会变，key 为每次登录随机生成，下线即失效，所以需要账号一直在线才能使用。搜索结果如下：
 
 ![搜索物品](imgs/搜索物品.png)
+# 更新日志
+## v0.2.1
+- 【增】：添加 logback.xml 日志文件
+- 【增】：引入自建缓存工具 cacher.jar，移除原本缓存工具
+- 【改】：包名从 com.xjx 改为 cn.xiejx

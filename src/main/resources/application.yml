@@ -11,15 +11,13 @@ spring:
       connection-test-query: SELECT 1
       connection-timeout: 10000
       minimum-idle: 2
-  jpa:
-    show-sql: true
 
-#showSql
 logging:
   level:
-    com:
-      xjx:
-        mapper: debug
+    cn:
+      xiejx:
+        ddtcrawler:
+          mapper: debug
 
 # 自定义配置
 mysql:

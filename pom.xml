@@ -8,9 +8,9 @@
         <version>3.0.0-M2</version>
         <relativePath/> <!-- lookup parent from repository -->
     </parent>
-    <groupId>com.xjx</groupId>
+    <groupId>cn.xiejx</groupId>
     <artifactId>ddt-crawler</artifactId>
-    <version>0.2.0</version>
+    <version>0.2.1</version>
     <name>ddt-crawler</name>
     <description>ddt-crawler</description>
     <properties>
@@ -20,6 +20,12 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
+            <exclusions>
+                <exclusion>
+                    <groupId>com.fasterxml.jackson.core</groupId>
+                    <artifactId>jackson-databind</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -49,6 +55,12 @@
         </dependency>
 
         <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>2.13.2.2</version>
+        </dependency>
+
+        <dependency>
             <groupId>com.baomidou</groupId>
             <artifactId>mybatis-plus-boot-starter</artifactId>
             <version>3.5.1</version>
@@ -63,11 +75,15 @@
             <artifactId>commons-collections4</artifactId>
             <version>4.4</version>
         </dependency>
-        <!-- https://mvnrepository.com/artifact/com.thoughtworks.xstream/xstream -->
         <dependency>
             <groupId>com.thoughtworks.xstream</groupId>
             <artifactId>xstream</artifactId>
             <version>1.4.19</version>
+        </dependency>
+        <dependency>
+            <groupId>cn.xiejx</groupId>
+            <artifactId>cacher</artifactId>
+            <version>0.0.2</version>
         </dependency>
 
     </dependencies>
