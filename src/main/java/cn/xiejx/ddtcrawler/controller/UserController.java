@@ -1,5 +1,6 @@
 package cn.xiejx.ddtcrawler.controller;
 
+import cn.xiejx.ddtcrawler.constants.Constant;
 import cn.xiejx.ddtcrawler.cookie.WebUser;
 import cn.xiejx.ddtcrawler.cookie.CookieHelper;
 import cn.xiejx.ddtcrawler.exception.MyException;
@@ -59,12 +60,12 @@ public class UserController {
         }
 
         long now = System.currentTimeMillis();
+        if (expireTime == null) {
+            expireTime = Constant.ONE_DAY_MILLISECONDS;
+        }
         webUser.setExpireTime(expireTime);
         webUser.setConcurrentTime(concurrentTime);
         String temporaryLicense = webUserLogic.generateTemporaryLicense(webUser);
-        if (expireTime == null) {
-            return new MyMessage(String.format("临时License: %s，不过期", temporaryLicense));
-        }
         return new MyMessage(String.format("临时License: %s，在%s秒后过期，过期时间：%s", temporaryLicense, expireTime, TimeUtil.timestampToString(expireTime * 1000 + now)));
     }
 

@@ -52,6 +52,7 @@ public class WebUserLogic {
         } else {
             expireTime = Constant.ONE_DAY_MILLISECONDS;
         }
+        webUser.setExpireTime(expireTime);
         String id = webUser.getId();
         cacher.set(id, webUser, expireTime);
         CookieHelper.setWebUserCookie(id, maxAge);

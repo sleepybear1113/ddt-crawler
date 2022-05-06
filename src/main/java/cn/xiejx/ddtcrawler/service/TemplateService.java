@@ -45,7 +45,11 @@ public class TemplateService {
         }
 
         ArrayList<TemplateDto> templateDtoList = new ArrayList<>();
-        BeanUtils.copyProperties(templates, templateDtoList);
+        for (Template template : templates) {
+            TemplateDto t = new TemplateDto();
+            BeanUtils.copyProperties(template, t);
+            templateDtoList.add(t);
+        }
 
         return templateDtoList;
     }
@@ -90,7 +94,11 @@ public class TemplateService {
     public List<TemplateDto> getAll() {
         List<Template> templates = templateMapper.selectList(new QueryWrapper<>());
         ArrayList<TemplateDto> templateDtoList = new ArrayList<>();
-        BeanUtils.copyProperties(templates, templateDtoList);
+        for (Template template : templates) {
+            TemplateDto t = new TemplateDto();
+            BeanUtils.copyProperties(template, t);
+            templateDtoList.add(t);
+        }
 
         return templateDtoList;
     }

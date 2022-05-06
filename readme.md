@@ -41,6 +41,9 @@ create index template_name_index on template (name);
 
 ![搜索物品](imgs/搜索物品.png)
 # 更新日志
+## v0.2.2
+- 【修】：copyProperties 数组异常
+- 【修】：expireTime npe
 ## v0.2.1
 - 【增】：添加 logback.xml 日志文件
 - 【增】：引入自建缓存工具 cacher.jar，移除原本缓存工具
